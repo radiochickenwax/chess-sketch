@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2009
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "chess-sketch", "chess-sketch\chess-sketch.csproj", "{46B0130F-FF0B-489D-9C86-72F9F92CB6F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gsChessLib", "gsChessLib\gsChessLib.csproj", "{964BFC3D-2CDB-4704-B4C2-9C503C08CDFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameTests", "GameTests\GameTests.csproj", "{911BDA1B-BEA9-42E3-BE35-654E98459897}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46B0130F-FF0B-489D-9C86-72F9F92CB6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46B0130F-FF0B-489D-9C86-72F9F92CB6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46B0130F-FF0B-489D-9C86-72F9F92CB6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46B0130F-FF0B-489D-9C86-72F9F92CB6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{964BFC3D-2CDB-4704-B4C2-9C503C08CDFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{964BFC3D-2CDB-4704-B4C2-9C503C08CDFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{964BFC3D-2CDB-4704-B4C2-9C503C08CDFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{964BFC3D-2CDB-4704-B4C2-9C503C08CDFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{911BDA1B-BEA9-42E3-BE35-654E98459897}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{911BDA1B-BEA9-42E3-BE35-654E98459897}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{911BDA1B-BEA9-42E3-BE35-654E98459897}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{911BDA1B-BEA9-42E3-BE35-654E98459897}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24F38407-289F-433B-9DCB-E07E2ABA1F3B}
+	EndGlobalSection
+EndGlobal
