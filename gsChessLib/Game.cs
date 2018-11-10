@@ -44,7 +44,18 @@ namespace gsChessLib
                                      // 1. the string should have 64 spaces
                                      // 2. the string should only have upper or lower 'rnbqkp.'
 
-                flag = (boardString.Length == 71);
+                Boolean flag1 = (boardString.Length == 71);
+                flag = flag1 & flag;
+
+                // verify there are 8 rows
+                Boolean flag2 = boardString.Count(x => x == '\n') == 7;
+                flag = flag2 & flag;
+
+                // verify each row has 8 chars
+                string[] rows = boardString.Split('\n');
+                Boolean flag3 = rows.Count() == 8;
+                flag = flag3 & flag;
+
                 return flag;
             }
 
