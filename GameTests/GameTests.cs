@@ -59,7 +59,7 @@ namespace gsChessLib
             //Assert.IsFalse(Game.Board.IsValidBoardString_8x8("RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr"));
 
             // missing char in first row
-            Assert.IsFalse(Game.Board.IsValidBoardString_8x8("RNBKQNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr")); 
+            Assert.IsFalse(Game.Board.IsValidBoardString_8x8("RNBKQNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr"));
         }
 
         [TestMethod]
@@ -69,6 +69,16 @@ namespace gsChessLib
             b.BoardString = b.Initialize8x8Board();
             Assert.IsTrue(b.BoardString == "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr");
 
+        }
+
+        [TestMethod]
+        public void TestBoardStringToPieces()
+        {
+            Game.Board b = new Game.Board();
+            b.BoardString = b.Initialize8x8Board();
+            b.BoardStringToPieces();
+            Assert.IsTrue(b.Pieces != null);
+            Assert.IsTrue( b.Pieces.Count == 32);
         }
     }
 }

@@ -59,12 +59,30 @@ namespace gsChessLib
                 return flag;
             }
 
-            public static void BoardStringToPieces()
+            public void BoardStringToPieces()
             {
+                List<Piece> newPieces = new List<Piece>();
                 // TODO: verify BoardString is not null or empty
                 // Update the list of Pieces given the boardstring
-                List<Piece> newPieces = new List<Piece>();
-                //Pieces
+
+                // need to traverse the string backwards - or reorganize the data so it doesn't need to be backwards
+                string[] rows = BoardString.Split('\n');
+                for (int i = 0; i < rows.Length; i++)
+                {
+                    string row = rows[i];
+                    for (int j = 0; j < row.Length; j++)
+                    {
+                        if (row[j] != '.')
+                        {
+                            Piece p = new Piece();
+                            p.x = (j + 1).ToString()[0];
+                            p.y = (i + 1).ToString()[0];
+                            newPieces.Add(p);
+                        }
+
+                    }
+                }
+                Pieces = newPieces;
             }
 
             // get a list of possible moves per piece given the board
