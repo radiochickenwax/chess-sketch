@@ -14,7 +14,8 @@ namespace gsChessLib
         {
             public char x { get; set; }
             public char y { get; set; }
-            public char color; // 'w' or 'b' for now
+            public string color; // 'w' or 'b' for now
+            public string type; // "knight", "pawn", ...
             public Boolean moved; // pawns can move two spaces if they have not moved yet
             // history
         }
@@ -75,8 +76,16 @@ namespace gsChessLib
                         if (row[j] != '.')
                         {
                             Piece p = new Piece();
+                            // set position
                             p.x = (j + 1).ToString()[0];
                             p.y = (i + 1).ToString()[0];
+                            // set color
+                            if (char.IsUpper(row[j].ToString()[0]))
+                                p.color = "w";
+                            else
+                                p.color = "b";  // TODO: extend this beyond upper/lower
+                            // set type
+                            p.type = row[j].ToString()[0].ToString();  // TODO:  rethink this - probably want more than the first character at some point
                             newPieces.Add(p);
                         }
 
@@ -109,32 +118,58 @@ namespace gsChessLib
 
 
 
-        public static List<Point> ValidMoves(Board p)
+        public static List<Point> ValidMoves(Board b, Piece p)
         {
             List<Point> Moves = new List<Point>();
             // Pawn
-            List<Point> PawnMoves = ValidPawnMoves(p);
+            List<Point> PawnMoves = ValidPawnMoves(b,p);
             // Rook
-            List<Point> RookMoves = ValidRookMoves(p);
+            List<Point> RookMoves = ValidRookMoves(b);
             // Knight
-            List<Point> KnightMoves = ValidKnightMoves(p);
+            List<Point> KnightMoves = ValidKnightMoves(b);
             // Bishop
-            List<Point> BishopMoves = ValidBishopMoves(p);
+            List<Point> BishopMoves = ValidBishopMoves(b);
             // Queen
-            List<Point> QueenMoves = ValidQueenMoves(p);
+            List<Point> QueenMoves = ValidQueenMoves(b);
             // King
-            List<Point> KingMoves = ValidKingMoves(p);
+            List<Point> KingMoves = ValidKingMoves(b);
             return Moves;
         }
 
-
-        public static List<Point> ValidPawnMoves(Board b)
+        // 2018-11-15 - cobbling this from https://github.com/radiochickenwax/radiochickenwax-chess/blob/master/gpyChess.py
+        public static Piece GetPieceOnSquare(Board b, char x, char y)
         {
+            // searching for piece on b,x,y
+            Piece thisPiece = null;
+            foreach (Piece p in b.Pieces)
+            {
+                // # print(piece.type+' tpcolor:'+str(piece.color)+' tpx:'+str(piece.x)+' tpy:'+str(piece.y))
+                if (p.x == x && p.y == y)
+                    thisPiece = p;
+            }
+            return thisPiece;
+
+        }
+
+        /// <summary>
+        /// Validate b and p upstream
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        public static List<Point> ValidPawnMoves(Board b, Piece p)
+        {
+            
             List<Point> ValidMoves = new List<Point>();
             // forward moves
             // -------------
             // 1. can move forward one space if nothing is blocking
+            // check forward space - this is +1 if white or -1 if black on a 8x8 game 
+            //if (p.color == 'w' && p.y + 1)
             // 2. can move forward two spaces if nothing is blocking and piece has not moved yet
+
+
+
             // diagonal moves
             // ---------------
             // 1. can move forward left if an opposing color is on that square
