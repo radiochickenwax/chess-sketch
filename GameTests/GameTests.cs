@@ -91,65 +91,54 @@ namespace gsChessLib
             Assert.IsTrue(b.Pieces.Count == 32);
 
             // iterate over the board
-            
+
             // first row
+            string FirstRow = "RNBKQBNR";
             for (int i = 1; i < 8; i++)
             {
                 Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '1');
                 Assert.IsTrue(p != null);
                 Assert.IsTrue(p.color == "w");
+                Assert.IsTrue(p.type == FirstRow[i - 1].ToString());
             }
 
             // second row
+            // (all pawns)
             for (int i = 1; i < 8; i++)
             {
                 Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '2');
                 Assert.IsTrue(p != null);
                 Assert.IsTrue(p.color == "w");
+                Assert.IsTrue(p.type == 'P'.ToString());
             }
 
-            // third row
-            for (int i = 1; i < 8; i++)
+            // third - sixth rows have no pieces on start
+            for (int j = 3; j < 7; j++)
             {
-                Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '3');
-                Assert.IsTrue(p == null);
+                for (int i = 1; i < 8; i++)
+                {
+                    Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], j.ToString()[0]);
+                    Assert.IsTrue(p == null);
+                }
             }
-
-            // fourth row
-            for (int i = 1; i < 8; i++)
-            {
-                Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '4');
-                Assert.IsTrue(p == null);
-            }
-
-            // fifth row
-            for (int i = 1; i < 8; i++)
-            {
-                Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '5');
-                Assert.IsTrue(p == null);
-            }
-
-            // sixth row
-            for (int i = 1; i < 8; i++)
-            {
-                Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '6');
-                Assert.IsTrue(p == null);
-            }
-
+            
             // seventh row
             for (int i = 1; i < 8; i++)
             {
                 Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '7');
                 Assert.IsTrue(p != null);
                 Assert.IsTrue(p.color == "b");
+                Assert.IsTrue(p.type == 'p'.ToString());
             }
 
-            // eigth row
+            // eighth row
+            string EighthRow = "rnbkqbnr";
             for (int i = 1; i < 8; i++)
             {
                 Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '8');
                 Assert.IsTrue(p != null);
                 Assert.IsTrue(p.color == "b");
+                Assert.IsTrue(p.type == EighthRow[i-1].ToString());
             }
 
         }
