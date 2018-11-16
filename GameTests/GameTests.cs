@@ -145,6 +145,40 @@ namespace gsChessLib
         }
 
         [TestMethod]
+        public void TestCheckForward()
+        {
+            // ==============
+            // positive case
+            // ==============
+            Game.Board b = new Game.Board();
+            // b.BoardString = b.Initialize8x8Board();
+            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+            b.BoardStringToPieces();
+            
+
+            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
+            Assert.IsTrue(p != null);
+            Assert.IsTrue(p.type == "P");
+
+            Game.Piece p1 = Game.CheckForward(b, p, -2);
+            Assert.IsTrue(p1 == null);
+
+            // ==============
+            // negative case
+            // ==============
+            b.BoardString = "RNBKQBNR\nQPPPPPPP\np.......\n........\n........\n........\npppppppp\nrnbkqbnr";
+            b.BoardStringToPieces();
+            p = Game.GetPieceOnSquare(b, '1', '2');
+            Assert.IsTrue(p != null);
+            Assert.IsTrue(p.type == "Q");
+
+            p1 = Game.GetPieceOnSquare(b, '1', '3');
+            Assert.IsTrue(p.type == "p");   // TODO:  this test fails - showing I don't understand what it's doing yet....  but I don't have time to check it further right now.
+            //p1 = Game.CheckForward(b, p, 1);
+            Assert.IsTrue(p1 != null);
+        }
+
+        [TestMethod]
         public void TestValidPawnMovesForward_init()
         {
             Game.Board b = new Game.Board();
@@ -158,9 +192,10 @@ namespace gsChessLib
             Assert.IsTrue( pts.Count > 0);
 
             // TODO: need a condition where there is a piece blocking
-            //Game.Board b = new Game.Board();
-            //b.BoardString = b.Initialize8x8Board();
-            //b.BoardStringToPieces();
+            b = new Game.Board();
+            // b.BoardString = b.Initialize8x8Board();
+            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+            b.BoardStringToPieces();
 
         }
     }

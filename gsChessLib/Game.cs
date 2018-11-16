@@ -179,6 +179,7 @@ namespace gsChessLib
         // get the piece that is n spaces forward from the supplied piece
         public static Piece CheckForward(Board b, Piece p, int n)
         {
+            // TODO: Define "forward" by piece color
             int y = Convert.ToInt32(p.y);
             int yn = y + n;
             Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
@@ -202,6 +203,7 @@ namespace gsChessLib
             // check forward space - this is +1 if white or -1 if black on a 8x8 game 
             // TODO: Get Piece on Point
             // TODO: Get Piece by algebraic notation
+            
             Point pt = new Point();
 
             if ( CheckForward(b,p,1) == null)
