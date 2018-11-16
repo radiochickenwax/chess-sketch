@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace gsChessLib
@@ -140,6 +141,26 @@ namespace gsChessLib
                 Assert.IsTrue(p.color == "b");
                 Assert.IsTrue(p.type == EighthRow[i-1].ToString());
             }
+
+        }
+
+        [TestMethod]
+        public void TestValidPawnMovesForward_init()
+        {
+            Game.Board b = new Game.Board();
+            b.BoardString = b.Initialize8x8Board();
+            b.BoardStringToPieces();
+
+            // initial board returns a valid set of two moves
+            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
+            Assert.IsTrue( p != null );
+            List<Point> pts = Game.ValidPawnMoves(b, p);
+            Assert.IsTrue( pts.Count > 0);
+
+            // TODO: need a condition where there is a piece blocking
+            //Game.Board b = new Game.Board();
+            //b.BoardString = b.Initialize8x8Board();
+            //b.BoardStringToPieces();
 
         }
     }

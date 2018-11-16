@@ -176,6 +176,15 @@ namespace gsChessLib
 
         }
 
+        // get the piece that is n spaces forward from the supplied piece
+        public static Piece CheckForward(Board b, Piece p, int n)
+        {
+            int y = Convert.ToInt32(p.y);
+            int yn = y + n;
+            Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
+            return ReturnPiece;
+        }
+
         /// <summary>
         /// Validate b and p upstream
         /// </summary>
@@ -184,28 +193,46 @@ namespace gsChessLib
         /// <returns></returns>
         public static List<Point> ValidPawnMoves(Board b, Piece p)
         {
-            
-            List<Point> ValidMoves = new List<Point>();
+            // evaluate as if p.type == "pawn" regardless of whether it is or isn't
+            List<Point> ValidPoints = new List<Point>();
+            // GetPieceOnSquare(b, p.x.ToString()[0], p.y.ToString()[0]); // this would be redundant
             // forward moves
             // -------------
             // 1. can move forward one space if nothing is blocking
             // check forward space - this is +1 if white or -1 if black on a 8x8 game 
             // TODO: Get Piece on Point
             // TODO: Get Piece by algebraic notation
+            Point pt = new Point();
 
+            if ( CheckForward(b,p,1) == null)
+            {
+                double tmp;
+                if (Double.TryParse(p.x.ToString(), out tmp))
+                    pt.X = tmp;
+                if (Double.TryParse(p.y.ToString(), out tmp))
+                    pt.Y = tmp+1;
+                ValidPoints.Add(pt);
+
+                if (p.moved == false)
+                    if (CheckForward(b, p, 2) == null)
+                    {
+                        if (Double.TryParse(p.x.ToString(), out tmp))
+                            pt.X = tmp;
+                        if (Double.TryParse(p.y.ToString(), out tmp))
+                            pt.Y = tmp + 2;
+                        ValidPoints.Add(pt);
+                    }
+            }
 
             //if (p.color == 'w' && p.y + 1)
 
-
             // 2. can move forward two spaces if nothing is blocking and piece has not moved yet
-
-
 
             // diagonal moves
             // ---------------
             // 1. can move forward left if an opposing color is on that square
             // 2. can move forward right if an opposing color is on that square
-            return ValidMoves;
+            return ValidPoints;
         }
 
         public static List<Point> ValidRookMoves(Board b)
