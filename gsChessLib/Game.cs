@@ -20,6 +20,27 @@ namespace gsChessLib
             // history
         }
 
+        public class Move
+        {
+            public Point StartPoint { get; set; }
+            public Point EndPoint { get; set; }
+            public String StartPointAlgebraic { get; set; }
+            public String EndPointAlgebraic { get; set; }
+
+        }
+
+        public static string PointToAlgebraic(Point p)
+        {
+            // TODO: try/catch cases:  p.X/p.Y > 8?
+            String alph = "abcdefgh";
+            String row, column;
+            // TODO: String rank, file;
+            row = p.X.ToString();
+            //rank = row;
+            column = alph[(int)p.Y].ToString();
+            return column + row;
+        }
+
         public class Board
         {
             //List<Point> points;
@@ -116,11 +137,15 @@ namespace gsChessLib
 
         }
 
-
-
+        // TODO:  look into the following:
+        // https://stackoverflow.com/questions/7532882/is-there-any-graph-data-structure-implemented-for-c-sharp
+        // https://msdn.microsoft.com/en-us/library/ms379574(v=vs.80).aspx#datastructures20_5_topic3
+        // https://archive.codeplex.com/?p=quickgraph
+        // Single depth list of moves for now - see the links above
         public static List<Point> ValidMoves(Board b, Piece p)
         {
-            List<Point> Moves = new List<Point>();
+            List<Point> Points = new List<Point>();
+            // TODO: use this instead: List<Move> Moves = new List<Move>();
             // Pawn
             List<Point> PawnMoves = ValidPawnMoves(b,p);
             // Rook
@@ -133,7 +158,7 @@ namespace gsChessLib
             List<Point> QueenMoves = ValidQueenMoves(b);
             // King
             List<Point> KingMoves = ValidKingMoves(b);
-            return Moves;
+            return Points;
         }
 
         // 2018-11-15 - cobbling this from https://github.com/radiochickenwax/radiochickenwax-chess/blob/master/gpyChess.py
@@ -165,7 +190,13 @@ namespace gsChessLib
             // -------------
             // 1. can move forward one space if nothing is blocking
             // check forward space - this is +1 if white or -1 if black on a 8x8 game 
+            // TODO: Get Piece on Point
+            // TODO: Get Piece by algebraic notation
+
+
             //if (p.color == 'w' && p.y + 1)
+
+
             // 2. can move forward two spaces if nothing is blocking and piece has not moved yet
 
 
