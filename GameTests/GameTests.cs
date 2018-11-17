@@ -63,14 +63,14 @@ namespace gsChessLib
             Assert.IsFalse(Game.Board.IsValidBoardString_8x8("RNBKQNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr"));
         }
 
-        [TestMethod]
-        public void GetInitialWhitePieces()
-        {
-            Game.Board b = new Game.Board();
-            b.BoardString = b.Initialize8x8Board();
-            Assert.IsTrue(b.BoardString == "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr");
+        //[TestMethod]
+        //public void GetInitialWhitePieces()
+        //{
+        //    Game.Board b = new Game.Board();
+        //    b.BoardString = b.Initialize8x8Board();
+        //    Assert.IsTrue(b.BoardString == "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr");
 
-        }
+        //}
 
         [TestMethod]
         public void TestBoardStringToPieces()
@@ -79,7 +79,7 @@ namespace gsChessLib
             b.BoardString = b.Initialize8x8Board();
             b.BoardStringToPieces();
             Assert.IsTrue(b.Pieces != null);
-            Assert.IsTrue( b.Pieces.Count == 32);
+            Assert.IsTrue(b.Pieces.Count == 32);
         }
 
         [TestMethod]
@@ -122,7 +122,7 @@ namespace gsChessLib
                     Assert.IsTrue(p == null);
                 }
             }
-            
+
             // seventh row
             for (int i = 1; i < 8; i++)
             {
@@ -139,22 +139,19 @@ namespace gsChessLib
                 Game.Piece p = Game.GetPieceOnSquare(b, i.ToString()[0], '8');
                 Assert.IsTrue(p != null);
                 Assert.IsTrue(p.color == "b");
-                Assert.IsTrue(p.type == EighthRow[i-1].ToString());
+                Assert.IsTrue(p.type == EighthRow[i - 1].ToString());
             }
 
         }
 
         [TestMethod]
-        public void TestCheckForward()
+        public void TestCheckForward_negative()
         {
-            // ==============
-            // positive case
-            // ==============
             Game.Board b = new Game.Board();
             // b.BoardString = b.Initialize8x8Board();
             b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
             b.BoardStringToPieces();
-            
+
 
             Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
             Assert.IsTrue(p != null);
@@ -162,19 +159,27 @@ namespace gsChessLib
 
             Game.Piece p1 = Game.CheckForward(b, p, -2);
             Assert.IsTrue(p1 == null);
+        }
 
+        [TestMethod]
+        public void TestCheckForward_positive()
+        {
+            Game.Board b = new Game.Board();
+            // b.BoardString = b.Initialize8x8Board();
+            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+            b.BoardStringToPieces();
             // ==============
             // negative case
             // ==============
             b.BoardString = "RNBKQBNR\nQPPPPPPP\np.......\n........\n........\n........\npppppppp\nrnbkqbnr";
             b.BoardStringToPieces();
-            p = Game.GetPieceOnSquare(b, '1', '2');
+            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
             Assert.IsTrue(p != null);
             Assert.IsTrue(p.type == "Q");
 
-            p1 = Game.GetPieceOnSquare(b, '1', '3');
-            Assert.IsTrue(p1.type == "p");   // TODO:  this test fails - showing I don't understand what it's doing yet....  but I don't have time to check it further right now.
-            //p1 = Game.CheckForward(b, p, 1);
+            Game.Piece p1 = Game.GetPieceOnSquare(b, '1', '3');
+            Assert.IsTrue(p1.type == "p");
+            p1 = Game.CheckForward(b, p, 1);
             Assert.IsTrue(p1 != null);
         }
 
@@ -187,15 +192,78 @@ namespace gsChessLib
 
             // initial board returns a valid set of two moves
             Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
-            Assert.IsTrue( p != null );
-            List<Point> pts = Game.ValidPawnMoves(b, p);
-            Assert.IsTrue( pts.Count > 0);
+            Assert.IsTrue(p != null);
 
-            // TODO: need a condition where there is a piece blocking
-            b = new Game.Board();
-            // b.BoardString = b.Initialize8x8Board();
-            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
-            b.BoardStringToPieces();
+            List<Point> pts2 = Game.ValidMoves(b, p);
+            Assert.IsTrue(pts2.Count > 0);
+            Assert.IsTrue(pts2.Count == 2);
+            Assert.IsTrue(pts2[0].X == 1);   // first move coordinates
+            Assert.IsTrue(pts2[0].Y == 3);
+            Assert.IsTrue(pts2[1].X == 1);   // second move coordinates
+            Assert.IsTrue(pts2[1].Y == 4);
+
+
+
+        }
+
+        [TestMethod]
+        public void TestValidPawnMovesForward_blocking()
+        {
+            // condition where there is a piece blocking
+            Game.Board b = new Game.Board("RNBKQBNR\nPPPPPPPP\n........\np.......\n........\n........\n.ppppppp\nrnbkqbnr");
+            Assert.IsTrue(b.Pieces.Count == 32);
+            // initial board returns a valid set of two moves -> this one should only return one
+            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
+            Assert.IsTrue(p != null);
+            List<Point> pts = Game.ValidMoves(b, p);
+            Assert.IsTrue(pts.Count == 1);
+
+            //b.BoardStringToPieces();
+        }
+
+        [TestMethod]
+        public void TestPointToAlgebraic()
+        {
+            String alph = "abcdefgh";
+
+            // first row: verify (1,1)-(8,1)  ==>  a1-h1
+            for (int i = 1; i <= alph.Length; i++)
+            {
+                Point p = new Point(i, 1);
+                string testString = Game.PointToAlgebraic(p);
+                Assert.IsTrue(testString == alph[i-1].ToString() + "1");
+                // test integration with AlgebraicStringToPoint()
+                Assert.IsTrue(p == Game.AlgebraicStringToPoint(testString));
+            }
+            // second row: verify (1,2)-(8,2)  ==>  a2-h2
+            for (int i = 1; i <= alph.Length; i++)
+            {
+                Point p = new Point(i, 2);
+                string testString = Game.PointToAlgebraic(p);
+                Assert.IsTrue(testString == alph[i-1].ToString() + "2");
+                // test integration with AlgebraicStringToPoint()
+                Assert.IsTrue(p == Game.AlgebraicStringToPoint(testString));
+            }
+            // ...  not really necessary to continue, but you can follow on from above if you want
+        }
+
+        [TestMethod]
+        public void TestAlgebraicStringToPoint()
+        {
+            string alph = "abcdefgh";
+            string InputString = "a1";
+            Point p = Game.AlgebraicStringToPoint(InputString);
+            Assert.IsTrue(p.X == 1);
+            Assert.IsTrue(p.Y == 1);
+            string OutputString = Game.PointToAlgebraic(p);
+            Assert.IsTrue(InputString == OutputString); // test integration with PointToAlgebraic()
+
+            InputString = "h8";
+            p = Game.AlgebraicStringToPoint(InputString);
+            Assert.IsTrue(p.X == 8);
+            Assert.IsTrue(p.Y == 8);
+
+            
 
         }
     }

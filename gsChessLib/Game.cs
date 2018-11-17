@@ -35,11 +35,22 @@ namespace gsChessLib
             String alph = "abcdefgh";
             String row, column;
             // TODO: String rank, file;
-            row = p.X.ToString();
+            column = alph[(int)(p.X - 1)].ToString(); 
             //rank = row;
-            column = alph[(int)p.Y].ToString();
+            row = p.Y.ToString();
             return column + row;
         }
+
+        public static Point AlgebraicStringToPoint(string s)
+        {
+            // TODO: try/catch cases:  p.X/p.Y > 8?
+            Point p = new Point();
+            char c = s[0];
+            p.X = "abcdefgh".IndexOf(c) + 1;
+            p.Y = s[1] - '0'; // convert char to int
+            return p;
+        }
+
 
         public class Board
         {
@@ -48,10 +59,28 @@ namespace gsChessLib
             public string BoardString { get; set; } // starting pos could be: 'RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr'
             public string MoveList_HorizonalNotation { get; set; } // Horizontally: " 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 "
 
+            public Board()
+            {
+
+            }
+
+            public Board(string s)
+            {
+                Initialize8x8Board(s);
+            }
+
             public string Initialize8x8Board()
             {
                 BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+                BoardStringToPieces();
                 return BoardString;
+            }
+
+            public void Initialize8x8Board(string s)
+            {
+                BoardString = s;
+                BoardStringToPieces();
+                //return BoardString;
             }
 
             //public void Initialize8x8Board() // can't overload like this
@@ -148,16 +177,22 @@ namespace gsChessLib
             // TODO: use this instead: List<Move> Moves = new List<Move>();
             // Pawn
             List<Point> PawnMoves = ValidPawnMoves(b,p);
+            Points.AddRange(PawnMoves);
             // Rook
             List<Point> RookMoves = ValidRookMoves(b);
+            Points.AddRange(RookMoves);
             // Knight
             List<Point> KnightMoves = ValidKnightMoves(b);
+            Points.AddRange(KnightMoves);
             // Bishop
             List<Point> BishopMoves = ValidBishopMoves(b);
+            Points.AddRange(BishopMoves);
             // Queen
             List<Point> QueenMoves = ValidQueenMoves(b);
+            Points.AddRange(QueenMoves);
             // King
             List<Point> KingMoves = ValidKingMoves(b);
+            Points.AddRange(KingMoves);
             return Points;
         }
 
@@ -180,7 +215,8 @@ namespace gsChessLib
         public static Piece CheckForward(Board b, Piece p, int n)
         {
             // TODO: Define "forward" by piece color
-            int y = Convert.ToInt32(p.y);
+            //int y = Convert.ToInt32(p.y);
+            int y = p.y - '0';  // hack hack hack - this converts the char to an int
             int yn = y + n;
             Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
             return ReturnPiece;
