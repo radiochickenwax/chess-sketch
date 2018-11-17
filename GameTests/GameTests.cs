@@ -173,7 +173,7 @@ namespace gsChessLib
             Assert.IsTrue(p.type == "Q");
 
             p1 = Game.GetPieceOnSquare(b, '1', '3');
-            Assert.IsTrue(p.type == "p");   // TODO:  this test fails - showing I don't understand what it's doing yet....  but I don't have time to check it further right now.
+            Assert.IsTrue(p1.type == "p");   // TODO:  this test fails - showing I don't understand what it's doing yet....  but I don't have time to check it further right now.
             //p1 = Game.CheckForward(b, p, 1);
             Assert.IsTrue(p1 != null);
         }
