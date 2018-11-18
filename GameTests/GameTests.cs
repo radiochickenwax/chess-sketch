@@ -145,6 +145,22 @@ namespace gsChessLib
         }
 
         [TestMethod]
+        public void Test_GetAlgebraicPiecesOnSquare_InitialBoard()
+        {
+            Game.Board b = new Game.Board("RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr");
+            Assert.IsTrue(b.Pieces != null);
+            Assert.IsTrue(b.Pieces.Count == 32);
+
+
+            Game.Piece p = Game.GetPieceOnSquare(b, "a1");
+            Assert.IsFalse(p == null);
+            Assert.IsTrue(p.AlgebraicCoordinate == "a1");
+            Assert.IsTrue(p.type == "R");  // This is a little counter-intuitive
+            Assert.IsTrue(p.color == "w");
+
+        }
+
+        [TestMethod]
         public void TestCheckForward_negative()
         {
             Game.Board b = new Game.Board();
@@ -201,8 +217,6 @@ namespace gsChessLib
             Assert.IsTrue(pts2[0].Y == 3);
             Assert.IsTrue(pts2[1].X == 1);   // second move coordinates
             Assert.IsTrue(pts2[1].Y == 4);
-
-
 
         }
 

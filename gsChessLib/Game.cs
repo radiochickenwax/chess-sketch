@@ -14,6 +14,7 @@ namespace gsChessLib
         {
             public char x { get; set; }
             public char y { get; set; }
+            public string AlgebraicCoordinate { get; set; }
             public string color; // 'w' or 'b' for now
             public string type; // "knight", "pawn", ...
             public Boolean moved; // pawns can move two spaces if they have not moved yet
@@ -129,6 +130,7 @@ namespace gsChessLib
                             // set position
                             p.x = (j + 1).ToString()[0];
                             p.y = (i + 1).ToString()[0];
+                            p.AlgebraicCoordinate = PointToAlgebraic(new Point(j+1,i+1));
                             // set color
                             if (char.IsUpper(row[j].ToString()[0]))
                                 p.color = "w";
@@ -211,6 +213,13 @@ namespace gsChessLib
 
         }
 
+        public static Piece GetPieceOnSquare(Board b, string algebraicCoordinate)
+        {
+            List<Piece> pieces =  b.Pieces.Where(piece => piece.AlgebraicCoordinate == algebraicCoordinate).ToList();
+            return (pieces == null || pieces.Count < 1) ? null : pieces[0];
+        }
+
+
         // get the piece that is n spaces forward from the supplied piece
         public static Piece CheckForward(Board b, Piece p, int n)
         {
@@ -222,13 +231,19 @@ namespace gsChessLib
             return ReturnPiece;
         }
 
-        /// <summary>
-        /// Validate b and p upstream
-        /// </summary>
-        /// <param name="b"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public static List<Point> ValidPawnMoves(Board b, Piece p)
+
+        public static List<Move> ValidPawnMoves(Board b, string algebraicCoordinate)
+        {
+            return null;
+        }
+
+            /// <summary>
+            /// Validate b and p upstream
+            /// </summary>
+            /// <param name="b"></param>
+            /// <param name="p"></param>
+            /// <returns></returns>
+            public static List<Point> ValidPawnMoves(Board b, Piece p)
         {
             // evaluate as if p.type == "pawn" regardless of whether it is or isn't
             List<Point> ValidPoints = new List<Point>();
