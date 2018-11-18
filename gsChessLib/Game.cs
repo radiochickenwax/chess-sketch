@@ -172,6 +172,8 @@ namespace gsChessLib
         // https://stackoverflow.com/questions/7532882/is-there-any-graph-data-structure-implemented-for-c-sharp
         // https://msdn.microsoft.com/en-us/library/ms379574(v=vs.80).aspx#datastructures20_5_topic3
         // https://archive.codeplex.com/?p=quickgraph
+        // https://github.com/nikaburu/wpf-chess
+        // https://programming-pages.com/2012/01/15/wpfs-grid-layout-in-xaml-and-c/
         // Single depth list of moves for now - see the links above
         public static List<Point> ValidMoves(Board b, Piece p)
         {
