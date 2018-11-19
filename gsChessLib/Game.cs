@@ -174,6 +174,7 @@ namespace gsChessLib
         // https://archive.codeplex.com/?p=quickgraph
         // https://github.com/nikaburu/wpf-chess
         // https://programming-pages.com/2012/01/15/wpfs-grid-layout-in-xaml-and-c/
+        // https://stackoverflow.com/questions/19911109/clicking-a-uniformgrid-filled-with-grids-getting-name-of-the-grid-im-clicking -- more useful
         // Single depth list of moves for now - see the links above
         public static List<Point> ValidMoves(Board b, Piece p)
         {
