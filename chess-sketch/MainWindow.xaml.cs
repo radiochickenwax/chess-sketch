@@ -25,7 +25,7 @@ namespace chess_sketch
             InitializeComponent();
             InitializeChessboard();
             FillInitializedChessboard();
-            // FillInitialPieces();
+            FillInitialPieces();
             //for (int i = 0; i < 10; i++)
             //{
             //    ColumnDefinition c1 = new ColumnDefinition();
@@ -49,15 +49,15 @@ namespace chess_sketch
         private void FillInitialPieces()
         {
             Image pawnImage = new Image();
-            pawnImage.Width = 100;
-            pawnImage.Height = 100;
+            //pawnImage.Width = 100;
+            //pawnImage.Height = 100;
             ImageSource pawn = new BitmapImage
             {
                 UriSource = new Uri("/images/3d-wood/bp.png", UriKind.Relative)
             };
             pawnImage.Source = pawn;
-            //Grid.SetRow(pawnImage, 0);
-            //Grid.SetColumn(pawnImage, 0);
+            Grid.SetRow(pawnImage, 0);
+            Grid.SetColumn(pawnImage, 0);
             MainGrid.Children.Add(pawnImage);
         }
 
@@ -109,6 +109,12 @@ namespace chess_sketch
                     MainGrid.Children.Add(b);
                     b.Child = square;
                 }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            metric metric = new metric();
+            metric.Show();
         }
     }
 }

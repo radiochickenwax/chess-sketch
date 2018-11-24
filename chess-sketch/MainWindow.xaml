@@ -7,11 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="350">
 
-    <Border BorderBrush="Red"  
-            BorderThickness="10"
-            Margin="20" >
-        <Grid Name="MainGrid" />
-    </Border>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border BorderBrush="Red"            
+                BorderThickness="10"
+                Grid.Row="0"
+                Margin="20" >
+            <Grid Name="MainGrid" />
+        </Border>
+        <Border Grid.Row="1">
+            <Button Content="hi" Click="Button_Click"/>
+        </Border>
+    </Grid>
 
     <!-- https://stackoverflow.com/questions/1966258/chessboard-in-wpf -->
 
