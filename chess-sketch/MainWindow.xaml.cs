@@ -48,18 +48,19 @@ namespace chess_sketch
 
         private void FillInitialPieces()
         {
-            Viewbox vb = new Viewbox();
-            
-            Image pawnImage = new Image();
-            pawnImage.Source = new BitmapImage(new Uri("bp.png", UriKind.RelativeOrAbsolute));
-            Grid.SetRow(vb, 5);
-            Grid.SetColumn(vb, 5);
-            MainGrid.Children.Add(vb);
-            vb.Child = pawnImage;
+            PlacePieceOnSquare("bp.png",5,5);
         }
 
-        private void PlacePieceOnSquare()
+        private void PlacePieceOnSquare(string piece, int row, int col)
         {
+            // TODO:  remove old viewbox
+            Viewbox vb = new Viewbox();
+            Image pawnImage = new Image();
+            pawnImage.Source = new BitmapImage(new Uri(piece, UriKind.RelativeOrAbsolute));
+            Grid.SetRow(vb, row);
+            Grid.SetColumn(vb, col);
+            MainGrid.Children.Add(vb);
+            vb.Child = pawnImage;
 
         }
 
