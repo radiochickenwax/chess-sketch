@@ -82,12 +82,13 @@ namespace chess_sketch
                     {
                         //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                         b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-
+                        square.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0,0,0));
                     }
                     else
                     {
                         //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                         b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                        square.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                     }
                     MainGrid.Children.Add(b);
                     b.Child = square;
