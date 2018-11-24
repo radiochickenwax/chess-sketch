@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chess_sketch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="525" Width="525">
     <ItemsControl ItemsSource="{Binding Squares}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
@@ -31,7 +31,7 @@
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding IsBlack}" Value="False">
-                        <Setter TargetName="Square" Property="Background" Value="Wheat"/>
+                        <Setter TargetName="Square" Property="Background" Value="White"/>
                     </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>

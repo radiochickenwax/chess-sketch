@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+// 2018-11-18
+// to really understand this -> https://stackoverflow.com/questions/15681352/transitioning-from-windows-forms-to-wpf/15684569#15684569
+// https://rachel53461.wordpress.com/2011/05/08/simplemvvmexample/
+// TODO: make a new project for that - link to it here
 namespace chess_sketch
 {
     /// <summary>
@@ -51,6 +55,8 @@ namespace chess_sketch
         private void OnSquareClick(ChessSquare square)
         {
             MessageBox.Show("You clicked on Row: " + square.Row + " - Column: " + square.Column);
+            // TODO:  show available moves (light them or something)
+            // you need to get this from the Game.cs and you need the board state to do it
         }
     }
     public class ChessSquare
