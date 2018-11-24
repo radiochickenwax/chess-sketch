@@ -47,15 +47,15 @@ namespace chess_sketch
 
         private void InitializeChessboard()
         {
-            GridLengthConverter myGridLengthConverter = new GridLengthConverter();
-            GridLength side = (GridLength)myGridLengthConverter.ConvertFromString("2*");
-            for (int i = 0; i < 9; i++)
-            {
-                MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                MainGrid.ColumnDefinitions[i].Width = side;
-                MainGrid.RowDefinitions.Add(new RowDefinition());
-                MainGrid.RowDefinitions[i].Height = side;
-            }
+            //GridLengthConverter myGridLengthConverter = new GridLengthConverter();
+            //GridLength side = (GridLength)myGridLengthConverter.ConvertFromString("2*");
+            //for (int i = 0; i < ; i++)
+            //{
+            //    MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
+            //    MainGrid.ColumnDefinitions[i].Width = side;
+            //    MainGrid.RowDefinitions.Add(new RowDefinition());
+            //    MainGrid.RowDefinitions[i].Height = side;
+            //}
 
         }
 
@@ -64,26 +64,33 @@ namespace chess_sketch
             //int squareSize = Math.Max(
             //        (double)(Window.WidthProperty) / 8,
             //        (double)( Window.HeightProperty*0.125) );
-            int squareSize = 50;
-            var a = Window.WidthProperty;
-            Rectangle[,] square = new Rectangle[9, 9];
-            for (int row = 0; row < 9; row++)
-                for (int col = 0; col < 9; col++)
+            //int squareSize = 50;
+            //var a = Window.WidthProperty;
+            //Rectangle[,] square = new Rectangle[9, 9];
+            
+            for (int row = 0; row < 8; row++)
+                for (int col = 0; col < 8; col++)
                 {
-                    square[row, col] = new Rectangle();
-                    square[row, col].Height = squareSize;
-                    square[row, col].Width = squareSize;
-                    Grid.SetColumn(square[row, col], col);
-                    Grid.SetRow(square[row, col], row);
+                    Border b = new Border();
+                    
+                    Label square = new Label();
+                    square.Content = row.ToString()+","+col.ToString();
+                    
+                    Grid.SetColumn(square, col);
+                    Grid.SetRow(square, row);
                     if ((row + col) % 2 == 0)
                     {
-                        square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                        //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                        b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+
                     }
                     else
                     {
-                        square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                        //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                        b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                     }
-                    MainGrid.Children.Add(square[row, col]);
+                    MainGrid.Children.Add(b);
+                    b.Child = square;
                 }
         }
     }

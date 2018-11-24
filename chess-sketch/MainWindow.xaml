@@ -5,23 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chess_sketch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid ShowGridLines="True" Margin="20" Name="MainGrid" Width="{Binding ActualWidth,RelativeSource = {RelativeSource AncestorType = {x:Type Window}}}" Height="{Binding ActualHeight, RelativeSource ={RelativeSource AncestorType = {x:Type Window}}}">
-        <!-- https://stackoverflow.com/questions/1966258/chessboard-in-wpf -->
-        <!--<ItemsControl ItemsSource="{Binding TheGame}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="8" Rows="8" Background="DarkBlue"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <ContentControl Background="{Binding SquareColor}">
-                        <Path Data="{Binding PieceShape}" Fill="{Binding PieceColor}" />
-                    </ContentControl>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
+        Title="MainWindow" Height="350" Width="350">
+
+    <Border BorderBrush="Red"  
+            BorderThickness="10"
+            Margin="20" >
+        <UniformGrid Name="MainGrid" />
+    </Border>
+
+    <!-- https://stackoverflow.com/questions/1966258/chessboard-in-wpf -->
+
         
-    </Grid>
 </Window>
