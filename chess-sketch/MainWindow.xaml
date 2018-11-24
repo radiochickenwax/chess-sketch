@@ -8,8 +8,8 @@
         Title="MainWindow" Height="525" Width="525">
     <ItemsControl ItemsSource="{Binding Squares}">
         <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <UniformGrid Rows="8" Columns="8"/>
+            <ItemsPanelTemplate>  <!-- what's a template in this context?-->
+                <UniformGrid Name="grid_Main" />
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
 

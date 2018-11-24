@@ -27,7 +27,22 @@ namespace chess_sketch
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ChessBoard();
+            DataContext = new ChessBoard();  // Ok... what's a DataContext?
+            // How do you add a piece on the board now?
+
+            var b = 2;
+
+            Image pawnImage = new Image();
+            ImageSource pawn = new BitmapImage
+            {
+                UriSource = new Uri("/images/3d-wood/bp.png", UriKind.Relative)
+            };
+            pawnImage.Source = pawn;
+            Grid.SetRow(pawnImage, 0);
+            Grid.SetColumn(pawnImage, 0);
+            //grid_Main.Children.Add(pawnImage);
+
+            var a = 2;
         }
     }
 
@@ -54,7 +69,7 @@ namespace chess_sketch
 
         private void OnSquareClick(ChessSquare square)
         {
-            MessageBox.Show("You clicked on Row: " + square.Row + " - Column: " + square.Column);
+            MessageBox.Show("You clicked on Row: " + square.Row + " - Column: " + square.Column + "\n" + "Piece: " +square.Piece);
             // TODO:  show available moves (light them or something)
             // you need to get this from the Game.cs and you need the board state to do it
         }
@@ -66,6 +81,8 @@ namespace chess_sketch
         public int Column { get; set; }
 
         public bool IsBlack { get { return (Row + Column) % 2 == 1; } }
+
+        public string Piece { get; set; }
     }
 
     public class Command<T> : ICommand
