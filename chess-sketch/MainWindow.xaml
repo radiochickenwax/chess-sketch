@@ -10,7 +10,7 @@
     <Border BorderBrush="Red"  
             BorderThickness="10"
             Margin="20" >
-        <UniformGrid Name="MainGrid" />
+        <Grid Name="MainGrid" />
     </Border>
 
     <!-- https://stackoverflow.com/questions/1966258/chessboard-in-wpf -->
