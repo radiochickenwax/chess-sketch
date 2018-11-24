@@ -115,5 +115,15 @@
     <Resource Include="wq.png" />
     <Resource Include="wr.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameTests\GameTests.csproj">
+      <Project>{911bda1b-bea9-42e3-be35-654e98459897}</Project>
+      <Name>GameTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\gsChessLib\gsChessLib.csproj">
+      <Project>{964bfc3d-2cdb-4704-b4c2-9c503c08cdfa}</Project>
+      <Name>gsChessLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -48,18 +48,21 @@ namespace chess_sketch
 
         private void FillInitialPieces()
         {
+            Viewbox vb = new Viewbox();
+            
             Image pawnImage = new Image();
-            //pawnImage.Width = 100;
-            //pawnImage.Height = 100;
-            ImageSource pawn = new BitmapImage
-            {
-                UriSource = new Uri("/images/3d-wood/bp.png", UriKind.Relative)
-            };
-            pawnImage.Source = pawn;
-            Grid.SetRow(pawnImage, 0);
-            Grid.SetColumn(pawnImage, 0);
-            MainGrid.Children.Add(pawnImage);
+            pawnImage.Source = new BitmapImage(new Uri("bp.png", UriKind.RelativeOrAbsolute));
+            Grid.SetRow(vb, 5);
+            Grid.SetColumn(vb, 5);
+            MainGrid.Children.Add(vb);
+            vb.Child = pawnImage;
         }
+
+        private void PlacePieceOnSquare()
+        {
+
+        }
+
 
         private void InitializeChessboard()
         {
