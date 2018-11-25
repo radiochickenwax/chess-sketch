@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Runtime.InteropServices;
+using gsChessLib;
 
 namespace chess_sketch
 {
@@ -20,12 +22,48 @@ namespace chess_sketch
     /// </summary>
     public partial class MainWindow : Window
     {
+        Game.Board Board { get; set; }
+
+        Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
+            { "R", "wr.png" },
+            { "N", "wn.png" },
+            { "B", "wb.png" },
+            { "K", "wk.png" },
+            { "Q", "wq.png" },
+            { "P", "wp.png" },
+            { "r", "br.png" },
+            { "n", "bn.png" },
+            { "b", "bb.png" },
+            { "k", "bk.png" },
+            { "q", "bq.png" },
+            { "p", "bp.png" }
+        };
+
         public MainWindow()
         {
             InitializeComponent();
             InitializeChessboard();
+
+
+            // these are UI only -- they need to link to the Game.cs
             FillInitializedChessboard();
-            FillInitialPieces();
+            // FillInitialPieces();
+
+            Board = new Game.Board("RNBKQBNR\nPPPPPPPP\n........\np.......\n........\n........\n.ppppppp\nrnbkqbnr");
+            ViewBoardString();
+
+        }
+
+        private void ViewBoardString()
+        {
+            Board.BoardStringToPieces();
+            foreach (Game.Piece p in Board.Pieces)
+            {
+                string PngPieceName = PiecesToPngDict[p.type];
+                int x = p.x - '0' - 1;  // convert char to int
+                int y = p.y - '0' - 1;  // convert char to int
+                PlacePieceOnSquare(PngPieceName, x, y);
+            }
 
         }
 
