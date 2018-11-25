@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Effects;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
@@ -109,6 +110,18 @@ namespace chess_sketch
             return v;
         }
 
+        private Border GetBorderOnGrid(int row, int col)
+        {
+            Border v = null;
+            var element = MainGrid.Children
+                .Cast<UIElement>()
+                .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
+            if (element != null)
+                if (element.GetType().Name == "Border")
+                    v = (Border)element;
+            return v;
+        }
+
         private void SquareClicked(object sender, MouseEventArgs e)
         {
             if (sender.GetType().Name == "Viewbox")
@@ -126,6 +139,9 @@ namespace chess_sketch
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
                     SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );
+                    // Need to register this square as "clicked" somewhere upstream
+                    // Viewbox v2 = GetViewBoxOnGrid(x,y);
+                    LightUpBorderOnGrid(x, y);
                 }
                 
                 // get image name from grid?
@@ -133,7 +149,38 @@ namespace chess_sketch
             }
         }
 
-       
+        private void LightUpBorderOnGrid(int row, int col)
+        {
+            Border b = GetBorderOnGrid(row, col);
+            
+            if (b != null)
+            {
+                //var blur = new BlurEffect();
+                //var glow = new OuterGlowBitmapEffect();
+                //var shade = new DropShadowEffect { Color=Colors.Red, BlurRadius=20, Opacity=1, ShadowDepth=100};
+                //blur.Radius = 20;
+                ////blur.KernelType = color
+                //// b.Effect = blur;
+                //// b.Effect = glow;
+                //b.Effect = shade;
+                Border light = new Border { Background = Brushes.Red, Opacity = 0.6, Name = "lb_" + row.ToString() + "_" + col.ToString() };
+                Grid.SetRow(light, row);
+                Grid.SetColumn(light, col);
+                MainGrid.Children.Add(light);
+            }
+        }
+
+        private void UnLightUpBorderOnGrid(int row, int col)
+        {
+            Border b = GetBorderOnGrid(row, col);
+
+            if (b != null)
+            {
+                b.Effect = null;
+            }
+        }
+
+
         private void InitializeChessboard()
         {
 
