@@ -22,7 +22,8 @@ namespace chess_sketch
     /// </summary>
     public partial class MainWindow : Window
     {
-        Game.Board Board { get; set; }
+        public Game.Board Board { get; set; }
+        public string BoardString { get; set; }
 
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
             { "R", "wr.png" },
@@ -42,14 +43,13 @@ namespace chess_sketch
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
             InitializeChessboard();
 
+            FillInitializedChessboard(); // this is UI only 
 
-            // these are UI only -- they need to link to the Game.cs
-            FillInitializedChessboard();
-            // FillInitialPieces();
-
-            Board = new Game.Board("RNBKQBNR\nPPPPPPPP\n........\np.......\n........\n........\n.ppppppp\nrnbkqbnr");
+            BoardString = "RNBKQBNR\nPPPPPPPP\n........\np.......\n........\n........\n.ppppppp\nrnbkqbnr";
+            Board = new Game.Board(BoardString);
             ViewBoardString();
 
         }
@@ -67,29 +67,10 @@ namespace chess_sketch
 
         }
 
-        private void GetPieceFromPngName() { }
-
-
-        // No longer needed
-        //private void FillInitialPieces()
-        //{
-        //    for (int i = 0; i < 8; i++)
-        //    {
-        //        PlacePieceOnSquare("bp.png", 1, i);
-        //        PlacePieceOnSquare("wp.png", 6, i);
-        //    }
-        //    List<string> WhiteOfficers = new List<string> { "wr.png", "wn.png", "wb.png", "wk.png", "wq.png", "wb.png", "wn.png", "wr.png" };
-        //    List<string> BlackOfficers = new List<string> { "br.png", "bn.png", "bb.png", "bq.png", "bk.png", "bb.png", "bn.png", "br.png"  };
-        //    for (int i = 0; i < WhiteOfficers.Count; i++)
-        //    {
-        //        PlacePieceOnSquare(WhiteOfficers[i], 7, i);
-        //    }
-        //    for (int i = 0; i < BlackOfficers.Count; i++)
-        //    {
-        //        PlacePieceOnSquare(BlackOfficers[i], 0, i);
-        //    }
-            
-        //}
+        private string GetPieceFromPngName(string value)
+        {
+            return PiecesToPngDict.FirstOrDefault(x => x.Value == value).Key;
+        }
 
         private void PlacePieceOnSquare(string piece, int row, int col)
         {
@@ -134,20 +115,22 @@ namespace chess_sketch
             {
                 Viewbox v = (Viewbox)sender;
                 string name = v.Name;
-                // MessageBox.Show("hello " + name);
                 SidePanelTextBox.Text += "\n" + name + " clicked.";
                 SidePanelTextBox.ScrollToEnd();
+                // get coords from name
+                string[] vals = name.Split('_');
+                if (vals.Count() == 3)
+                {
+                    string x_str = vals[1];
+                    string y_str = vals[2];
+                    int x = x_str[0] - '0';
+                    int y = y_str[0] - '0';
+                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );
+                }
+                
+                // get image name from grid?
+                
             }
-
-            if (sender.GetType().Name == "Image")
-            {
-                Image i = (Image)sender;
-                string name = i.Name;
-                //MessageBox.Show("hello " + name);
-                SidePanelTextBox.Text += "\n" + name + " clicked.";
-                SidePanelTextBox.ScrollToEnd();
-            }
-            
         }
 
        
