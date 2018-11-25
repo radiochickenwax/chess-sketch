@@ -50,7 +50,18 @@ namespace chess_sketch
 
         private void PlacePieceOnSquare(string piece, int row, int col)
         {
-            // TODO:  remove old viewbox
+            // remove old viewbox
+            var element = MainGrid.Children
+                .Cast<UIElement>()
+                .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
+            if (element != null)
+                if (element.GetType().Name == "Viewbox") {
+                    Viewbox v = (Viewbox)element;
+                    v.Child = null;
+                    MainGrid.Children.Remove(v);
+                }
+
+            // add new viewbox
             Viewbox vb = new Viewbox();
             Image pawnImage = new Image();
             pawnImage.Source = new BitmapImage(new Uri(piece, UriKind.RelativeOrAbsolute));
