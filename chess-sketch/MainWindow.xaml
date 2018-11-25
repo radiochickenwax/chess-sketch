@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:chess_sketch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="350">
+        Title="MainWindow" Height="850" Width="850">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -18,12 +18,7 @@
                 Margin="20" >
             <Grid Name="MainGrid" />
         </Border>
-        <Border Grid.Row="1">
-            <Button Content="hi" Click="Button_Click"/>
-        </Border>
+
     </Grid>
-
-    <!-- https://stackoverflow.com/questions/1966258/chessboard-in-wpf -->
-
         
 </Window>

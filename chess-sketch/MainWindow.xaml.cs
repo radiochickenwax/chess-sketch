@@ -26,29 +26,26 @@ namespace chess_sketch
             InitializeChessboard();
             FillInitializedChessboard();
             FillInitialPieces();
-            //for (int i = 0; i < 10; i++)
-            //{
-            //    ColumnDefinition c1 = new ColumnDefinition();
-            //    c1.Width = GridLength.Auto;
-            //    MainGrid.ColumnDefinitions.Add(c1);
 
-            //    RowDefinition rd = new RowDefinition();
-            //    rd.Height = GridLength.Auto;
-            //    MainGrid.RowDefinitions.Add(new RowDefinition());
-            //}
-
-
-            //for (int i=0; i < 8; i++)
-            //{
-            //    // var cell = MainGrid.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
-            //    var cell = MainGrid.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == 0 && Grid.GetColumn(e) == i);
-
-            //}
         }
 
         private void FillInitialPieces()
         {
-            PlacePieceOnSquare("bp.png",5,5);
+            for (int i = 0; i < 8; i++)
+            {
+                PlacePieceOnSquare("bp.png", 1, i);
+                PlacePieceOnSquare("wp.png", 6, i);
+            }
+            List<string> WhiteOfficers = new List<string> { "wr.png", "wn.png", "wb.png", "wk.png", "wq.png", "wb.png", "wn.png", "wr.png" };
+            List<string> BlackOfficers = new List<string> { "br.png", "bn.png", "bb.png", "bq.png", "bk.png", "bb.png", "bn.png", "br.png"  };
+            for (int i = 0; i < WhiteOfficers.Count; i++)
+            {
+                PlacePieceOnSquare(WhiteOfficers[i], 7, i);
+            }
+            for (int i = 0; i < BlackOfficers.Count; i++)
+            {
+                PlacePieceOnSquare(BlackOfficers[i], 0, i);
+            }
         }
 
         private void PlacePieceOnSquare(string piece, int row, int col)
@@ -67,27 +64,17 @@ namespace chess_sketch
 
         private void InitializeChessboard()
         {
-            //GridLengthConverter myGridLengthConverter = new GridLengthConverter();
-            //GridLength side = (GridLength)myGridLengthConverter.ConvertFromString("2*");
+
             for (int i = 0; i < 8; i++)
             {
                 MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
-                // MainGrid.ColumnDefinitions[i].Width = side;
                 MainGrid.RowDefinitions.Add(new RowDefinition());
-                // MainGrid.RowDefinitions[i].Height = side;
             }
 
         }
 
         private void FillInitializedChessboard()
         {
-            //int squareSize = Math.Max(
-            //        (double)(Window.WidthProperty) / 8,
-            //        (double)(Window.HeightProperty * 0.125));
-            //int squareSize = 50;
-            //var a = Window.WidthProperty;
-            //Rectangle[,] square = new Rectangle[9, 9];
-
             for (int row = 0; row < 8; row++)
                 for (int col = 0; col < 8; col++)
                 {
@@ -100,13 +87,11 @@ namespace chess_sketch
                     Grid.SetRow(b, row);
                     if ((row + col) % 2 == 0)
                     {
-                        //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                         b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                         square.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                     }
                     else
                     {
-                        //square[row, col].Fill = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                         b.Background = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                         square.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                     }
@@ -115,10 +100,5 @@ namespace chess_sketch
                 }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            metric metric = new metric();
-            metric.Show();
-        }
     }
 }
