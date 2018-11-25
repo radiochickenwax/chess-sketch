@@ -94,16 +94,13 @@ namespace chess_sketch
         private void PlacePieceOnSquare(string piece, int row, int col)
         {
             // remove old viewbox -> this should be it's own method?
-            var element = MainGrid.Children
-                .Cast<UIElement>()
-                .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
-            if (element != null)
-                if (element.GetType().Name == "Viewbox") {
-                    Viewbox v = (Viewbox)element;
-                    v.Child = null;
-                    MainGrid.Children.Remove(v);
-                }
-
+            Viewbox v = GetViewBoxOnGrid(row, col);
+            if (v != null)
+            {
+                v.Child = null;
+                MainGrid.Children.Remove(v);
+            }
+            
             // add new viewbox and image
             Viewbox vb = new Viewbox();
             vb.Name = "vb_" + row.ToString() + "_" + col.ToString();
@@ -117,10 +114,18 @@ namespace chess_sketch
             Grid.SetColumn(vb, col);
             MainGrid.Children.Add(vb);
             vb.Child = pawnImage;
+        }
 
-            // set the board string?
-            // need to add click event or command on grid and / or image
-
+        private Viewbox GetViewBoxOnGrid(int row, int col)
+        {
+            Viewbox v = null;
+            var element = MainGrid.Children
+                .Cast<UIElement>()
+                .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
+            if (element != null)
+                if (element.GetType().Name == "Viewbox")
+                    v = (Viewbox)element;
+            return v;
         }
 
         private void SquareClicked(object sender, MouseEventArgs e)
@@ -129,14 +134,18 @@ namespace chess_sketch
             {
                 Viewbox v = (Viewbox)sender;
                 string name = v.Name;
-                MessageBox.Show("hello " + name);
+                // MessageBox.Show("hello " + name);
+                SidePanelTextBox.Text += "\n" + name + " clicked.";
+                SidePanelTextBox.ScrollToEnd();
             }
 
             if (sender.GetType().Name == "Image")
             {
                 Image i = (Image)sender;
                 string name = i.Name;
-                MessageBox.Show("hello " + name);
+                //MessageBox.Show("hello " + name);
+                SidePanelTextBox.Text += "\n" + name + " clicked.";
+                SidePanelTextBox.ScrollToEnd();
             }
             
         }
