@@ -67,29 +67,33 @@ namespace chess_sketch
 
         }
 
-        private void FillInitialPieces()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                PlacePieceOnSquare("bp.png", 1, i);
-                PlacePieceOnSquare("wp.png", 6, i);
-            }
-            List<string> WhiteOfficers = new List<string> { "wr.png", "wn.png", "wb.png", "wk.png", "wq.png", "wb.png", "wn.png", "wr.png" };
-            List<string> BlackOfficers = new List<string> { "br.png", "bn.png", "bb.png", "bq.png", "bk.png", "bb.png", "bn.png", "br.png"  };
-            for (int i = 0; i < WhiteOfficers.Count; i++)
-            {
-                PlacePieceOnSquare(WhiteOfficers[i], 7, i);
-            }
-            for (int i = 0; i < BlackOfficers.Count; i++)
-            {
-                PlacePieceOnSquare(BlackOfficers[i], 0, i);
-            }
+        private void GetPieceFromPngName() { }
+
+
+        // No longer needed
+        //private void FillInitialPieces()
+        //{
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        PlacePieceOnSquare("bp.png", 1, i);
+        //        PlacePieceOnSquare("wp.png", 6, i);
+        //    }
+        //    List<string> WhiteOfficers = new List<string> { "wr.png", "wn.png", "wb.png", "wk.png", "wq.png", "wb.png", "wn.png", "wr.png" };
+        //    List<string> BlackOfficers = new List<string> { "br.png", "bn.png", "bb.png", "bq.png", "bk.png", "bb.png", "bn.png", "br.png"  };
+        //    for (int i = 0; i < WhiteOfficers.Count; i++)
+        //    {
+        //        PlacePieceOnSquare(WhiteOfficers[i], 7, i);
+        //    }
+        //    for (int i = 0; i < BlackOfficers.Count; i++)
+        //    {
+        //        PlacePieceOnSquare(BlackOfficers[i], 0, i);
+        //    }
             
-        }
+        //}
 
         private void PlacePieceOnSquare(string piece, int row, int col)
         {
-            // remove old viewbox
+            // remove old viewbox -> this should be it's own method?
             var element = MainGrid.Children
                 .Cast<UIElement>()
                 .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col);
@@ -100,18 +104,44 @@ namespace chess_sketch
                     MainGrid.Children.Remove(v);
                 }
 
-            // add new viewbox
+            // add new viewbox and image
             Viewbox vb = new Viewbox();
+            vb.Name = "vb_" + row.ToString() + "_" + col.ToString();
+
             Image pawnImage = new Image();
+            pawnImage.Name = "im_" + row.ToString() + "_" + col.ToString();
+
+            vb.MouseDown += SquareClicked;
             pawnImage.Source = new BitmapImage(new Uri(piece, UriKind.RelativeOrAbsolute));
             Grid.SetRow(vb, row);
             Grid.SetColumn(vb, col);
             MainGrid.Children.Add(vb);
             vb.Child = pawnImage;
 
+            // set the board string?
+            // need to add click event or command on grid and / or image
+
         }
 
+        private void SquareClicked(object sender, MouseEventArgs e)
+        {
+            if (sender.GetType().Name == "Viewbox")
+            {
+                Viewbox v = (Viewbox)sender;
+                string name = v.Name;
+                MessageBox.Show("hello " + name);
+            }
 
+            if (sender.GetType().Name == "Image")
+            {
+                Image i = (Image)sender;
+                string name = i.Name;
+                MessageBox.Show("hello " + name);
+            }
+            
+        }
+
+       
         private void InitializeChessboard()
         {
 

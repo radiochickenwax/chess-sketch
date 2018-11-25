@@ -40,6 +40,10 @@
             <TextBox Text="Player2" Grid.Column="0"/>
             <TextBox Name="Player2Time" Text="Time" Grid.Column="1"/>
         </Grid>
+        <!-- Board String-->
+        <Grid Grid.Column="1" Grid.Row="1">
+            <TextBox Text="board string"/>
+        </Grid>
     </Grid>
         
 </Window>
