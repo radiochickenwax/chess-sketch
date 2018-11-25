@@ -60,8 +60,8 @@ namespace chess_sketch
             foreach (Game.Piece p in Board.Pieces)
             {
                 string PngPieceName = PiecesToPngDict[p.type];
-                int x = p.x - '0' - 1;  // convert char to int
-                int y = p.y - '0' - 1;  // convert char to int
+                int x = p.y - '0' - 1;  // convert char to int
+                int y = p.x - '0' - 1;  // convert char to int
                 PlacePieceOnSquare(PngPieceName, x, y);
             }
 
