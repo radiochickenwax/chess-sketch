@@ -9,16 +9,37 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition/>
+            <RowDefinition Height="0.75*"/>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="0.75*"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Border BorderBrush="Red"            
                 BorderThickness="10"
-                Grid.Row="0"
+                Grid.Row="1"
+                Grid.Column="0"
                 Margin="20" >
             <Grid Name="MainGrid" />
         </Border>
-
+        <Grid Grid.Column="0" Grid.Row="0" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="Player1" Grid.Column="0"/>
+            <TextBox Text="Time" Grid.Column="1"/>
+        </Grid>
+        <Grid Grid.Column="0" Grid.Row="2" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <TextBox Text="Player2" Grid.Column="0"/>
+            <TextBox Text="Time" Grid.Column="1"/>
+        </Grid>
     </Grid>
         
 </Window>

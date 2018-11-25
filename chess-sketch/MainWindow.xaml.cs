@@ -46,6 +46,7 @@ namespace chess_sketch
             {
                 PlacePieceOnSquare(BlackOfficers[i], 0, i);
             }
+            
         }
 
         private void PlacePieceOnSquare(string piece, int row, int col)
