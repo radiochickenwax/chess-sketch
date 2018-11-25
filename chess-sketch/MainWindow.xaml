@@ -30,7 +30,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBox Text="Player1" Grid.Column="0"/>
-            <TextBox Text="Time" Grid.Column="1"/>
+            <TextBox Name="Player1Time" Text="Time" Grid.Column="1"/>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="2" >
             <Grid.ColumnDefinitions>
@@ -38,7 +38,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <TextBox Text="Player2" Grid.Column="0"/>
-            <TextBox Text="Time" Grid.Column="1"/>
+            <TextBox Name="Player2Time" Text="Time" Grid.Column="1"/>
         </Grid>
     </Grid>
         
