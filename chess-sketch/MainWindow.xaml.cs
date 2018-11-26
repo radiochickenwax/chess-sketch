@@ -10,7 +10,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Media.Effects;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
@@ -21,10 +20,25 @@ namespace chess_sketch
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
+    public class coordinate
+    {
+        public int x { get; set; }
+        public int y { get; set; }
+        public coordinate(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+
     public partial class MainWindow : Window
     {
         public Game.Board Board { get; set; }
         public string BoardString { get; set; }
+        public List<coordinate> LitSquares { get; set; }
 
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
             { "R", "wr.png" },
@@ -45,6 +59,7 @@ namespace chess_sketch
         {
             InitializeComponent();
             DataContext = this;
+            LitSquares = new List<coordinate>();
             InitializeChessboard();
 
             FillInitializedChessboard(); // this is UI only 
@@ -122,6 +137,24 @@ namespace chess_sketch
             return v;
         }
 
+        private Border GetLitSquareOnGrid(int row, int col)
+        {
+            Border v = null;
+            var element = MainGrid.Children
+                .Cast<UIElement>()
+                .Where(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == col );
+            if (element != null)
+                foreach (var e in element)
+                    if (e.GetType().Name == "Border")
+                    {
+                        var b = (Border)e;
+                        if (b.Name.Contains("lb_"))
+                            v = b; // there should only be one
+                    }
+            return v;
+        }
+
+
         private void SquareClicked(object sender, MouseEventArgs e)
         {
             if (sender.GetType().Name == "Viewbox")
@@ -138,9 +171,27 @@ namespace chess_sketch
                     string y_str = vals[2];
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
-                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );
-                    // Need to register this square as "clicked" somewhere upstream
-                    // Viewbox v2 = GetViewBoxOnGrid(x,y);
+                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );   
+                    string PngName = ((Image)v.Child).Source.ToString();
+                    PngName = 6 > PngName.Length ? PngName : PngName.Substring(PngName.Length - 6);
+
+                    if (LitSquares.Count > 0)
+                        for (int i = 0; i < LitSquares.Count; i++)
+                        {
+                            coordinate c = LitSquares[i];
+                            UnLightUpBorderOnGrid(c.x, c.y);
+                        }
+
+
+                    // get piece from dict
+                    string PieceName = GetPieceFromPngName(PngName);
+                    SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
+                    
+                    
+                    // get piece on board
+                    Game.Piece p = Game.GetPieceOnSquare(Board, x.ToString()[0], y.ToString()[0]);
+
+
                     LightUpBorderOnGrid(x, y);
                 }
                 
@@ -151,33 +202,23 @@ namespace chess_sketch
 
         private void LightUpBorderOnGrid(int row, int col)
         {
-            Border b = GetBorderOnGrid(row, col);
-            
-            if (b != null)
-            {
-                //var blur = new BlurEffect();
-                //var glow = new OuterGlowBitmapEffect();
-                //var shade = new DropShadowEffect { Color=Colors.Red, BlurRadius=20, Opacity=1, ShadowDepth=100};
-                //blur.Radius = 20;
-                ////blur.KernelType = color
-                //// b.Effect = blur;
-                //// b.Effect = glow;
-                //b.Effect = shade;
-                Border light = new Border { Background = Brushes.Red, Opacity = 0.6, Name = "lb_" + row.ToString() + "_" + col.ToString() };
-                Grid.SetRow(light, row);
-                Grid.SetColumn(light, col);
-                MainGrid.Children.Add(light);
-            }
+            Border light = new Border { Background = Brushes.Red, Opacity = 0.6, Name = "lb_" + row.ToString() + "_" + col.ToString() };
+            Grid.SetRow(light, row);
+            Grid.SetColumn(light, col);
+            MainGrid.Children.Add(light);
+            LitSquares.Add(new coordinate(row, col));
         }
 
         private void UnLightUpBorderOnGrid(int row, int col)
         {
-            Border b = GetBorderOnGrid(row, col);
-
+            // remove from UI
+            Border b = GetLitSquareOnGrid(row,col);
             if (b != null)
-            {
-                b.Effect = null;
-            }
+                MainGrid.Children.Remove(b);
+
+            // remove from list
+            LitSquares.RemoveAll(l => l.x == row && l.y == col);
+
         }
 
 

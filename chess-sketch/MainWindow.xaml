@@ -44,10 +44,12 @@
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition/>
+                <RowDefinition/>
                 <RowDefinition Height="5*"/>
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" Name="SidePanelTextBox0" FontFamily="Courier New" FontSize="10" Text="{Binding Path=BoardString, Mode=TwoWay}" VerticalScrollBarVisibility="Auto"/>
-            <TextBox Grid.Row="1" Name="SidePanelTextBox" Text="board string" VerticalScrollBarVisibility="Auto"/>
+            <TextBox Grid.Row="1" Name="SidePanelTextBox1" Text="board string" VerticalScrollBarVisibility="Auto"/>
+            <TextBox Grid.Row="2" Name="SidePanelTextBox" Text="board string" VerticalScrollBarVisibility="Auto"/>
         </Grid>
     </Grid>
         
