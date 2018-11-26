@@ -225,10 +225,13 @@ namespace gsChessLib
         // get the piece that is n spaces forward from the supplied piece
         public static Piece CheckForward(Board b, Piece p, int n)
         {
-            // TODO: Define "forward" by piece color
-            //int y = Convert.ToInt32(p.y);
             int y = p.y - '0';  // hack hack hack - this converts the char to an int
+            // TODO: Define "forward" by piece color
             int yn = y + n;
+            if (p.color == "b")
+                yn = y - n;
+            //int y = Convert.ToInt32(p.y);
+            
             Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
             return ReturnPiece;
         }
@@ -265,7 +268,12 @@ namespace gsChessLib
                 if (Double.TryParse(p.x.ToString(), out tmp))
                     pt.X = tmp;
                 if (Double.TryParse(p.y.ToString(), out tmp))
-                    pt.Y = tmp+1;
+                {
+                    pt.Y = tmp + 1;
+                    if (p.color == "b")
+                        pt.Y = tmp - 1;
+                }
+                    
                 ValidPoints.Add(pt);
 
                 if (p.moved == false)
@@ -275,6 +283,8 @@ namespace gsChessLib
                             pt.X = tmp;
                         if (Double.TryParse(p.y.ToString(), out tmp))
                             pt.Y = tmp + 2;
+                        if (p.color == "b")
+                            pt.Y = tmp - 2;
                         ValidPoints.Add(pt);
                     }
             }
