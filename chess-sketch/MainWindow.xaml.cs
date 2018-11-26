@@ -186,10 +186,13 @@ namespace chess_sketch
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
-                    
-                    
+
+
                     // get piece on board
-                    Game.Piece p = Game.GetPieceOnSquare(Board, x.ToString()[0], y.ToString()[0]);
+                    char xchr = (y+1).ToString()[0];
+                    char ychr = (x+1).ToString()[0];
+                    Game.Piece p = Game.GetPieceOnSquare(Board, xchr, ychr);
+
 
 
                     LightUpBorderOnGrid(x, y);
