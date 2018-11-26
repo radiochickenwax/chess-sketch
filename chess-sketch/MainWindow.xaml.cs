@@ -154,6 +154,17 @@ namespace chess_sketch
             return v;
         }
 
+        private void RemoveAllLitSquares()
+        {
+            if (LitSquares.Count > 0)
+            {
+                while (LitSquares.Count > 0)
+                {
+                    coordinate c = LitSquares[0];
+                    UnLightUpBorderOnGrid(c.x, c.y);
+                }
+            }
+        }
 
         private void SquareClicked(object sender, MouseEventArgs e)
         {
@@ -175,27 +186,25 @@ namespace chess_sketch
                     string PngName = ((Image)v.Child).Source.ToString();
                     PngName = 6 > PngName.Length ? PngName : PngName.Substring(PngName.Length - 6);
 
-                    if (LitSquares.Count > 0)
-                        for (int i = 0; i < LitSquares.Count; i++)
-                        {
-                            coordinate c = LitSquares[i];
-                            UnLightUpBorderOnGrid(c.x, c.y);
-                        }
-
+                    RemoveAllLitSquares();
 
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
 
+                    LightUpBorderOnGrid(x, y);
 
                     // get piece on board
                     char xchr = (y+1).ToString()[0];
                     char ychr = (x+1).ToString()[0];
                     Game.Piece p = Game.GetPieceOnSquare(Board, xchr, ychr);
 
-
-
-                    LightUpBorderOnGrid(x, y);
+                    // get possible moves
+                    List<Point> pts = Game.ValidMoves(Board, p);
+                    // convert them and light them up
+                    foreach (Point pt in pts)
+                        LightUpBorderOnGrid((int)pt.Y-1, (int)pt.X-1);
+                    
                 }
                 
                 // get image name from grid?
