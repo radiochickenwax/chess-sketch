@@ -236,6 +236,25 @@ namespace gsChessLib
             return ReturnPiece;
         }
 
+        // get the piece that is n spaces diagonal from the supplied piece
+        public static Piece CheckDiagonal(Board b, Piece p, int n, char direction)
+        {
+            int x = p.x - '0';  // convert the char to an int
+            int y = p.y - '0';  // convert the char to an int
+            int yn, xn;
+            // Define "forward" by piece color
+            yn = (p.color == "b") ? (y - n) : (y + n);
+            xn = (p.color == "b") ? (x + n) : (x + n);
+
+            if (direction == 'l')
+            {
+                yn = (p.color == "b") ? (y - n) : (y + n);
+                xn = (p.color == "b") ? (x - n) : (x + n);
+            }
+
+            Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
+            return ReturnPiece;
+        }
 
         public static List<Move> ValidPawnMoves(Board b, string algebraicCoordinate)
         {
@@ -252,6 +271,7 @@ namespace gsChessLib
         {
             // evaluate as if p.type == "pawn" regardless of whether it is or isn't
             List<Point> ValidPoints = new List<Point>();
+            double tmp;
             // GetPieceOnSquare(b, p.x.ToString()[0], p.y.ToString()[0]); // this would be redundant
             // forward moves
             // -------------
@@ -259,12 +279,12 @@ namespace gsChessLib
             // check forward space - this is +1 if white or -1 if black on a 8x8 game 
             // TODO: Get Piece on Point
             // TODO: Get Piece by algebraic notation
-            
+
             Point pt = new Point();
 
             if ( CheckForward(b,p,1) == null)
             {
-                double tmp;
+                
                 if (Double.TryParse(p.x.ToString(), out tmp))
                     pt.X = tmp;
                 if (Double.TryParse(p.y.ToString(), out tmp))
@@ -297,6 +317,23 @@ namespace gsChessLib
             // ---------------
             // 1. can move forward left if an opposing color is on that square
             // 2. can move forward right if an opposing color is on that square
+            if (CheckDiagonal(b, p, 1, 'l') != null)
+            {
+                if (Double.TryParse(p.x.ToString(), out tmp))
+                    pt.X = tmp + 1;
+                if (Double.TryParse(p.y.ToString(), out tmp))
+                    pt.Y = tmp + 1;
+                ValidPoints.Add(pt);
+            }
+            if (CheckDiagonal(b, p, 1, 'r') != null)
+            {
+                if (Double.TryParse(p.x.ToString(), out tmp))
+                    pt.X = tmp + 1;
+                if (Double.TryParse(p.y.ToString(), out tmp))
+                    pt.Y = tmp + 1;
+                ValidPoints.Add(pt);
+            }
+
             return ValidPoints;
         }
 
