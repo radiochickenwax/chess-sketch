@@ -36,9 +36,9 @@ namespace gsChessLib
             String alph = "abcdefgh";
             String row, column;
             // TODO: String rank, file;
-            column = alph[(int)(p.X - 1)].ToString(); 
+            column = alph[(int)(p.X)].ToString(); 
             //rank = row;
-            row = p.Y.ToString();
+            row = (p.Y + 1).ToString();
             return column + row;
         }
 
@@ -47,8 +47,8 @@ namespace gsChessLib
             // TODO: try/catch cases:  p.X/p.Y > 8?
             Point p = new Point();
             char c = s[0];
-            p.X = "abcdefgh".IndexOf(c) + 1;
-            p.Y = s[1] - '0'; // convert char to int
+            p.X = "abcdefgh".IndexOf(c);
+            p.Y = s[1] - '0' - 1; // convert char to int
             return p;
         }
 
@@ -130,7 +130,7 @@ namespace gsChessLib
                             // set position
                             p.x = (j + 1).ToString()[0];
                             p.y = (i + 1).ToString()[0];
-                            p.AlgebraicCoordinate = PointToAlgebraic(new Point(j+1,i+1));
+                            p.AlgebraicCoordinate = PointToAlgebraic(new Point(j,i));
                             // set color
                             if (char.IsUpper(row[j].ToString()[0]))
                                 p.color = "w";
@@ -239,20 +239,28 @@ namespace gsChessLib
         // get the piece that is n spaces diagonal from the supplied piece
         public static Piece CheckDiagonal(Board b, Piece p, int n, char direction)
         {
+            Piece ReturnPiece = null;
             int x = p.x - '0';  // convert the char to an int
             int y = p.y - '0';  // convert the char to an int
-            int yn, xn;
+            int yn = -1;
+            int xn = -1;
             // Define "forward" by piece color
-            yn = (p.color == "b") ? (y - n) : (y + n);
-            xn = (p.color == "b") ? (x + n) : (x + n);
+            // TODO: check that (x+n) || (y+n) < board length
+            if (direction == 'r')
+            {
+                yn = (p.color == "b") ? (y - n >= 0) ? (y - n) : -1 : (y + n <= 7) ? (y + n) : -1;
+                xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1;
+            }
 
             if (direction == 'l')
             {
-                yn = (p.color == "b") ? (y - n) : (y + n);
-                xn = (p.color == "b") ? (x - n) : (x + n);
+                yn = (p.color == "b") ? (y + n <= 7) ? (y + n) : -1 : (y - n >= 0) ? (y - n) : -1;
+                
+                xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1; 
             }
 
-            Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
+            if (xn >= 0 && yn >= 0)
+                ReturnPiece = GetPieceOnSquare(b, xn.ToString()[0], yn.ToString()[0]); // TODO: verify this doesn't overflow the board
             return ReturnPiece;
         }
 
@@ -328,9 +336,16 @@ namespace gsChessLib
             if (CheckDiagonal(b, p, 1, 'r') != null)
             {
                 if (Double.TryParse(p.x.ToString(), out tmp))
-                    pt.X = tmp + 1;
+                    pt.X = tmp - 1;
                 if (Double.TryParse(p.y.ToString(), out tmp))
                     pt.Y = tmp + 1;
+                if (p.color == "b")
+                {
+                    if (Double.TryParse(p.x.ToString(), out tmp))
+                        pt.X = tmp - 1;
+                    if (Double.TryParse(p.y.ToString(), out tmp))
+                        pt.Y = tmp - 1;
+                }
                 ValidPoints.Add(pt);
             }
 

@@ -221,6 +221,21 @@ namespace gsChessLib
         }
 
         [TestMethod]
+        public void TestValidPawnMovesDiagonal_l_1()
+        {
+            Game.Board b = new Game.Board("RNBKQBNR\nPPPPPPPP\n.p......\np.......\n........\n.....P..\n.ppppppp\nrnbkqbnr");
+            //b.BoardString = b.Initialize8x8Board();
+            b.BoardStringToPieces();
+
+            // TODO: actually test the method - this is just cruft trying to set up for the real test while switching notations
+            Game.Piece p = Game.GetPieceOnSquare(b, '1', '7');
+            Game.Piece p2 = Game.GetPieceOnSquare(b, "a7");  // same piece different method
+            Assert.IsTrue(p == null);
+            Assert.IsTrue(p2 == null);
+
+        }
+
+        [TestMethod]
         public void TestValidPawnMovesForward_blocking()
         {
             // condition where there is a piece blocking
@@ -241,20 +256,20 @@ namespace gsChessLib
             String alph = "abcdefgh";
 
             // first row: verify (1,1)-(8,1)  ==>  a1-h1
-            for (int i = 1; i <= alph.Length; i++)
+            for (int i = 0; i < alph.Length; i++)
             {
-                Point p = new Point(i, 1);
+                Point p = new Point(i, 0);
                 string testString = Game.PointToAlgebraic(p);
-                Assert.IsTrue(testString == alph[i-1].ToString() + "1");
+                Assert.IsTrue(testString == alph[i].ToString()+"1");
                 // test integration with AlgebraicStringToPoint()
                 Assert.IsTrue(p == Game.AlgebraicStringToPoint(testString));
             }
             // second row: verify (1,2)-(8,2)  ==>  a2-h2
-            for (int i = 1; i <= alph.Length; i++)
+            for (int i = 0; i < alph.Length; i++)
             {
-                Point p = new Point(i, 2);
+                Point p = new Point(i, 1);
                 string testString = Game.PointToAlgebraic(p);
-                Assert.IsTrue(testString == alph[i-1].ToString() + "2");
+                Assert.IsTrue(testString == alph[i].ToString() + "2");
                 // test integration with AlgebraicStringToPoint()
                 Assert.IsTrue(p == Game.AlgebraicStringToPoint(testString));
             }
@@ -267,15 +282,15 @@ namespace gsChessLib
             string alph = "abcdefgh";
             string InputString = "a1";
             Point p = Game.AlgebraicStringToPoint(InputString);
-            Assert.IsTrue(p.X == 1);
-            Assert.IsTrue(p.Y == 1);
+            Assert.IsTrue(p.X == 0);
+            Assert.IsTrue(p.Y == 0);
             string OutputString = Game.PointToAlgebraic(p);
             Assert.IsTrue(InputString == OutputString); // test integration with PointToAlgebraic()
 
             InputString = "h8";
             p = Game.AlgebraicStringToPoint(InputString);
-            Assert.IsTrue(p.X == 8);
-            Assert.IsTrue(p.Y == 8);
+            Assert.IsTrue(p.X == 7);
+            Assert.IsTrue(p.Y == 7);
 
             
 
