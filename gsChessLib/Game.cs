@@ -257,24 +257,21 @@ namespace gsChessLib
             {
                 if (p.color == "b")
                 {
-                    // if (y - n > 0)
-                        yn = (y - n);
-
-                    // if (x - n > 0)
-                        xn = x - n;
+                    yn = (y - n);
+                    xn = (x - n);
                 }
-                //if (p.color == "w")
-                //    if (y + n < 9)
-                //     yn = (y + n);
-                ////xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1; 
-
-                //if (p.color == "w")
-                //    if (x - n < 1)
-                //        xn = x - n;
+                if (p.color == "w")
+                {
+                    yn = (y + n);
+                    xn = (x + n);
+                }
             }
 
-            if (xn > 0 && yn > 0)
-                ReturnPiece = GetPieceOnSquare(b, xn.ToString()[0], yn.ToString()[0]); // TODO: verify this doesn't overflow the board
+            if (xn > 0) // verify this doesn't overflow the board
+                if (yn > 0)
+                    if (xn < 9)
+                        if (yn < 9)
+                            ReturnPiece = GetPieceOnSquare(b, xn.ToString()[0], yn.ToString()[0]); 
             return ReturnPiece;
         }
 
