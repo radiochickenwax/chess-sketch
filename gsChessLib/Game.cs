@@ -30,29 +30,6 @@ namespace gsChessLib
 
         }
 
-        public static string PointToAlgebraic(Point p)
-        {
-            // TODO: try/catch cases:  p.X/p.Y > 8?
-            String alph = "abcdefgh";
-            String row, column;
-            // TODO: String rank, file;
-            column = alph[(int)(p.X)].ToString(); 
-            //rank = row;
-            row = (p.Y + 1).ToString();
-            return column + row;
-        }
-
-        public static Point AlgebraicStringToPoint(string s)
-        {
-            // TODO: try/catch cases:  p.X/p.Y > 8?
-            Point p = new Point();
-            char c = s[0];
-            p.X = "abcdefgh".IndexOf(c);
-            p.Y = s[1] - '0' - 1; // convert char to int
-            return p;
-        }
-
-
         public class Board
         {
             //List<Point> points;
@@ -168,6 +145,30 @@ namespace gsChessLib
 
         }
 
+
+        public static string PointToAlgebraic(Point p)
+        {
+            // TODO: try/catch cases:  p.X/p.Y > 8?
+            String alph = "abcdefgh";
+            String row, column;
+            // TODO: String rank, file;
+            column = alph[(int)(p.X)].ToString();
+            //rank = row;
+            row = (p.Y + 1).ToString();
+            return column + row;
+        }
+
+        public static Point AlgebraicStringToPoint(string s)
+        {
+            // TODO: try/catch cases:  p.X/p.Y > 8?
+            Point p = new Point();
+            char c = s[0];
+            p.X = "abcdefgh".IndexOf(c);
+            p.Y = s[1] - '0' - 1; // convert char to int
+            return p;
+        }
+
+
         // TODO:  look into the following:
         // https://stackoverflow.com/questions/7532882/is-there-any-graph-data-structure-implemented-for-c-sharp
         // https://msdn.microsoft.com/en-us/library/ms379574(v=vs.80).aspx#datastructures20_5_topic3
@@ -254,12 +255,25 @@ namespace gsChessLib
 
             if (direction == 'l')
             {
-                yn = (p.color == "b") ? (y + n <= 7) ? (y + n) : -1 : (y - n >= 0) ? (y - n) : -1;
-                
-                xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1; 
+                if (p.color == "b")
+                {
+                    // if (y - n > 0)
+                        yn = (y - n);
+
+                    // if (x - n > 0)
+                        xn = x - n;
+                }
+                //if (p.color == "w")
+                //    if (y + n < 9)
+                //     yn = (y + n);
+                ////xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1; 
+
+                //if (p.color == "w")
+                //    if (x - n < 1)
+                //        xn = x - n;
             }
 
-            if (xn >= 0 && yn >= 0)
+            if (xn > 0 && yn > 0)
                 ReturnPiece = GetPieceOnSquare(b, xn.ToString()[0], yn.ToString()[0]); // TODO: verify this doesn't overflow the board
             return ReturnPiece;
         }
@@ -269,13 +283,14 @@ namespace gsChessLib
             return null;
         }
 
-            /// <summary>
-            /// Validate b and p upstream
-            /// </summary>
-            /// <param name="b"></param>
-            /// <param name="p"></param>
-            /// <returns></returns>
-            public static List<Point> ValidPawnMoves(Board b, Piece p)
+        /// <summary>
+        /// Validate b and p upstream
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+
+        public static List<Point> ValidPawnMoves(Board b, Piece p)
         {
             // evaluate as if p.type == "pawn" regardless of whether it is or isn't
             List<Point> ValidPoints = new List<Point>();
@@ -327,27 +342,30 @@ namespace gsChessLib
             // 2. can move forward right if an opposing color is on that square
             if (CheckDiagonal(b, p, 1, 'l') != null)
             {
-                if (Double.TryParse(p.x.ToString(), out tmp))
-                    pt.X = tmp + 1;
-                if (Double.TryParse(p.y.ToString(), out tmp))
-                    pt.Y = tmp + 1;
-                ValidPoints.Add(pt);
-            }
-            if (CheckDiagonal(b, p, 1, 'r') != null)
-            {
-                if (Double.TryParse(p.x.ToString(), out tmp))
-                    pt.X = tmp - 1;
-                if (Double.TryParse(p.y.ToString(), out tmp))
-                    pt.Y = tmp + 1;
+                int n = 1;
                 if (p.color == "b")
-                {
-                    if (Double.TryParse(p.x.ToString(), out tmp))
-                        pt.X = tmp - 1;
-                    if (Double.TryParse(p.y.ToString(), out tmp))
-                        pt.Y = tmp - 1;
-                }
+                    n *= -1;
+                if (Double.TryParse(p.x.ToString(), out tmp))
+                    pt.X = tmp + n;
+                if (Double.TryParse(p.y.ToString(), out tmp))
+                    pt.Y = tmp + n;
                 ValidPoints.Add(pt);
             }
+            //if (CheckDiagonal(b, p, 1, 'r') != null)
+            //{
+            //    if (Double.TryParse(p.x.ToString(), out tmp))
+            //        pt.X = tmp - 1;
+            //    if (Double.TryParse(p.y.ToString(), out tmp))
+            //        pt.Y = tmp + 1;
+            //    if (p.color == "b")
+            //    {
+            //        if (Double.TryParse(p.x.ToString(), out tmp))
+            //            pt.X = tmp - 1;
+            //        if (Double.TryParse(p.y.ToString(), out tmp))
+            //            pt.Y = tmp - 1;
+            //    }
+            //    ValidPoints.Add(pt);
+            //}
 
             return ValidPoints;
         }

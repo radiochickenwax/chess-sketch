@@ -253,7 +253,7 @@ namespace chess_sketch
                     Border b = new Border();
 
                     Label square = new Label();
-                    square.Content = row.ToString() + "," + col.ToString();
+                    square.Content = (col+1).ToString() + "," + (row+1).ToString();
 
                     Grid.SetColumn(b, col);
                     Grid.SetRow(b, row);
