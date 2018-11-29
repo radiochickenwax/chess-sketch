@@ -238,7 +238,7 @@ namespace gsChessLib
         }
 
         // get the piece that is n spaces diagonal from the supplied piece
-        public static Piece CheckDiagonal(Board b, Piece p, int n, char direction)
+        public static Piece CheckDiagonal(Board b, Piece p, int n, string direction)
         {
             Piece ReturnPiece = null;
             int x = p.x - '0';  // convert the char to an int
@@ -247,13 +247,21 @@ namespace gsChessLib
             int xn = -1;
             // Define "forward" by piece color
             // TODO: check that (x+n) || (y+n) < board length
-            if (direction == 'r')
+            if (direction == "r")
             {
-                yn = (p.color == "b") ? (y - n >= 0) ? (y - n) : -1 : (y + n <= 7) ? (y + n) : -1;
-                xn = (p.color == "b") ? (x + n) : (x - n >= 0) ? (x - n) : -1;
+                if (p.color == "b")
+                {
+                    yn = (y + n);
+                    xn = (x - n);
+                }
+                if (p.color == "w")
+                {
+                    yn = (y - n);
+                    xn = (x + n);
+                }
             }
 
-            if (direction == 'l')
+            if (direction == "l")
             {
                 if (p.color == "b")
                 {
@@ -337,7 +345,7 @@ namespace gsChessLib
             // ---------------
             // 1. can move forward left if an opposing color is on that square
             // 2. can move forward right if an opposing color is on that square
-            if (CheckDiagonal(b, p, 1, 'l') != null)
+            if (CheckDiagonal(b, p, 1, "l") != null)
             {
                 int n = 1;
                 if (p.color == "b")
@@ -348,21 +356,17 @@ namespace gsChessLib
                     pt.Y = tmp + n;
                 ValidPoints.Add(pt);
             }
-            //if (CheckDiagonal(b, p, 1, 'r') != null)
-            //{
-            //    if (Double.TryParse(p.x.ToString(), out tmp))
-            //        pt.X = tmp - 1;
-            //    if (Double.TryParse(p.y.ToString(), out tmp))
-            //        pt.Y = tmp + 1;
-            //    if (p.color == "b")
-            //    {
-            //        if (Double.TryParse(p.x.ToString(), out tmp))
-            //            pt.X = tmp - 1;
-            //        if (Double.TryParse(p.y.ToString(), out tmp))
-            //            pt.Y = tmp - 1;
-            //    }
-            //    ValidPoints.Add(pt);
-            //}
+            if (CheckDiagonal(b, p, 1, "r") != null)
+            {
+                int n = 1;
+                if (p.color == "b")
+                    n *= -1;
+                if (Double.TryParse(p.x.ToString(), out tmp))
+                    pt.X = tmp - n;
+                if (Double.TryParse(p.y.ToString(), out tmp))
+                    pt.Y = tmp + n;
+                ValidPoints.Add(pt);
+            }
 
             return ValidPoints;
         }
