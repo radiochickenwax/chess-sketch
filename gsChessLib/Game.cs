@@ -245,34 +245,25 @@ namespace gsChessLib
             int y = p.y - '0';  // convert the char to an int
             int yn = -1;
             int xn = -1;
-            // Define "forward" by piece color
-            // TODO: check that (x+n) || (y+n) < board length
-            if (direction == "r")
+            if (direction == "ne")
             {
-                if (p.color == "b")
-                {
-                    yn = (y + n);
-                    xn = (x - n);
-                }
-                if (p.color == "w")
-                {
-                    yn = (y - n);
-                    xn = (x + n);
-                }
+                xn = (x - n);
+                yn = (y + n);
             }
-
-            if (direction == "l")
+            if (direction == "nw")
             {
-                if (p.color == "b")
-                {
-                    yn = (y - n);
-                    xn = (x - n);
-                }
-                if (p.color == "w")
-                {
-                    yn = (y + n);
-                    xn = (x + n);
-                }
+                xn = (x + n);
+                yn = (y + n);
+            }
+            if (direction == "se")
+            {
+                xn = (x - n);
+                yn = (y - n);
+            }
+            if (direction == "sw") // b: (r->sw), w: 
+            {
+                xn = (x + n);
+                yn = (y - n);
             }
 
             if (xn > 0) // verify this doesn't overflow the board
@@ -345,27 +336,33 @@ namespace gsChessLib
             // ---------------
             // 1. can move forward left if an opposing color is on that square
             // 2. can move forward right if an opposing color is on that square
-            if (CheckDiagonal(b, p, 1, "l") != null)
+            string forward_right = (p.color == "b") ? "sw" : "ne";
+            string forward_left = (p.color == "b") ? "se" : "nw";
+
+            Piece forward_right_piece = CheckDiagonal(b, p, 1, forward_right);
+            Piece forward_left_piece = CheckDiagonal(b, p, 1, forward_left);
+
+            if ( forward_right_piece != null)
             {
-                int n = 1;
-                if (p.color == "b")
-                    n *= -1;
-                if (Double.TryParse(p.x.ToString(), out tmp))
-                    pt.X = tmp + n;
-                if (Double.TryParse(p.y.ToString(), out tmp))
-                    pt.Y = tmp + n;
-                ValidPoints.Add(pt);
+                if (forward_right_piece.color != p.color)
+                {
+                    if (Double.TryParse(forward_right_piece.x.ToString(), out tmp))
+                        pt.X = tmp;
+                    if (Double.TryParse(forward_right_piece.y.ToString(), out tmp))
+                        pt.Y = tmp;
+                    ValidPoints.Add(pt);
+                }
             }
-            if (CheckDiagonal(b, p, 1, "r") != null)
+            if (forward_left_piece != null)
             {
-                int n = 1;
-                if (p.color == "b")
-                    n *= -1;
-                if (Double.TryParse(p.x.ToString(), out tmp))
-                    pt.X = tmp - n;
-                if (Double.TryParse(p.y.ToString(), out tmp))
-                    pt.Y = tmp + n;
-                ValidPoints.Add(pt);
+                if (forward_left_piece.color != p.color)
+                {
+                    if (Double.TryParse(forward_left_piece.x.ToString(), out tmp))
+                        pt.X = tmp;
+                    if (Double.TryParse(forward_left_piece.y.ToString(), out tmp))
+                        pt.Y = tmp;
+                    ValidPoints.Add(pt);
+                }
             }
 
             return ValidPoints;
