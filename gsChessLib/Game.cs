@@ -114,8 +114,8 @@ namespace gsChessLib
                             else
                                 p.color = "b";  // TODO: extend this beyond upper/lower
                             // set type
-                            p.type = row[j].ToString()[0].ToString().ToLower();  // TODO:  rethink this - probably want more than the first character at some point
-                            newPieces.Add(p);
+                            p.type = row[j].ToString()[0].ToString();  // TODO:  rethink this - probably want more than the first character at some point
+                            newPieces.Add(p);  // TODO: rethink the upper/lower scenario above as now the UI is built on it
                         }
 
                     }
@@ -181,42 +181,42 @@ namespace gsChessLib
             List<Point> Points = new List<Point>();
             // TODO: use this instead: List<Move> Moves = new List<Move>();
             // Pawn
-            if (p.type == "p")
+            if (p.type.ToLower() == "p")
             {
                 List<Point> PawnMoves = ValidPawnMoves(b, p);
                 Points.AddRange(PawnMoves);
             }
             
             // Rook
-            if (p.type == "r")
+            if (p.type.ToLower() == "r")
             {
-                List<Point> RookMoves = ValidRookMoves(b);
+                List<Point> RookMoves = ValidRookMoves(b,p);                
                 Points.AddRange(RookMoves);
             }
             
             // Knight
-            if (p.type == "n")
+            if (p.type.ToLower() == "n")
             {
                 List<Point> KnightMoves = ValidKnightMoves(b);
                 Points.AddRange(KnightMoves);
             }
             
             // Bishop
-            if (p.type == "b")
+            if (p.type.ToLower() == "b")
             {
                 List<Point> BishopMoves = ValidBishopMoves(b);
                 Points.AddRange(BishopMoves);
             }
             
             // Queen
-            if (p.type == "q")
+            if (p.type.ToLower() == "q")
             {
                 List<Point> QueenMoves = ValidQueenMoves(b);
                 Points.AddRange(QueenMoves);
             }
 
             // King
-            if (p.type == "k")
+            if (p.type.ToLower() == "k")
             {
                 List<Point> KingMoves = ValidKingMoves(b);
                 Points.AddRange(KingMoves);
@@ -423,13 +423,86 @@ namespace gsChessLib
             return ValidPoints;
         }
 
-        public static List<Point> ValidRookMoves(Board b)
+        public static List<Point> GetEmptyForwardPieces(Board b, Piece p, string direction)
+        {
+            List<Point> ReturnPoints = new List<Point>();
+            Piece TestPiece = null;
+            int i = 1;
+            bool EndOfBoard = false;
+            int x = p.x - '0';   // convert from char to int
+            int y = p.y - '0';
+            while (TestPiece == null && !EndOfBoard)
+            {
+                TestPiece = CheckForward(b, p, i, direction);
+                if (TestPiece == null)
+                {
+                    if (direction == "n")
+                    {
+                        if (y + i > 8)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x), Y = (double)(y + i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+
+                    else if (direction == "s")
+                    {
+                        if (y - i < 1)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x), Y = (double)(y - i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+
+                    else if (direction == "e")
+                    {
+                        if (x - i < 1)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x - i), Y = (double)(y) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+
+                    else if (direction == "w")
+                    {
+                        if (x + i > 8)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x + i), Y = (double)(y) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+
+                    else
+                        EndOfBoard = true;
+                    i++;
+                }
+            }
+            return ReturnPoints;
+        }
+
+        public static List<Point> ValidRookMoves(Board b, Piece p)
         {
             List<Point> ValidMoves = new List<Point>();
-            // check forward
-            // check backward
-            // check left
-            // check right
+            // check north
+            List<Point> NorthPoints = GetEmptyForwardPieces(b,p,"n");
+            ValidMoves.AddRange(NorthPoints);
+            // check south
+            List<Point> SouthPoints = GetEmptyForwardPieces(b, p, "s");
+            ValidMoves.AddRange(SouthPoints);
+            // check east
+            List<Point> EastPoints = GetEmptyForwardPieces(b, p, "e");
+            ValidMoves.AddRange(EastPoints);
+            // check west
+            List<Point> WestPoints = GetEmptyForwardPieces(b, p, "w");
+            ValidMoves.AddRange(WestPoints);
             return ValidMoves;
         }
 

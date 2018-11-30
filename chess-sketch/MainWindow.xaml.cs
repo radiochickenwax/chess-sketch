@@ -40,6 +40,7 @@ namespace chess_sketch
         public string BoardString { get; set; }
         public List<coordinate> LitSquares { get; set; }
 
+        // TODO:  make this independent of capitalization
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
             { "R", "wr.png" },
             { "N", "wn.png" },
@@ -64,7 +65,7 @@ namespace chess_sketch
 
             FillInitializedChessboard(); // this is UI only 
 
-            BoardString = "RNBKQBNR\nPPPPPPPP\n.p......\np.......\n........\n.....P..\n.ppppppp\nrnbkqbnr";
+            BoardString = "RNBKQBNR\nPPPPPPPP\n.p......\np...r...\n.R......\n.....P..\n.ppppppp\nrnbkqbnr";
             Board = new Game.Board(BoardString);
             ViewBoardString();
 
