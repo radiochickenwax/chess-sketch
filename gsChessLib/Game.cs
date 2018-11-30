@@ -114,7 +114,7 @@ namespace gsChessLib
                             else
                                 p.color = "b";  // TODO: extend this beyond upper/lower
                             // set type
-                            p.type = row[j].ToString()[0].ToString();  // TODO:  rethink this - probably want more than the first character at some point
+                            p.type = row[j].ToString()[0].ToString().ToLower();  // TODO:  rethink this - probably want more than the first character at some point
                             newPieces.Add(p);
                         }
 
@@ -181,23 +181,47 @@ namespace gsChessLib
             List<Point> Points = new List<Point>();
             // TODO: use this instead: List<Move> Moves = new List<Move>();
             // Pawn
-            List<Point> PawnMoves = ValidPawnMoves(b,p);
-            Points.AddRange(PawnMoves);
+            if (p.type == "p")
+            {
+                List<Point> PawnMoves = ValidPawnMoves(b, p);
+                Points.AddRange(PawnMoves);
+            }
+            
             // Rook
-            List<Point> RookMoves = ValidRookMoves(b);
-            Points.AddRange(RookMoves);
+            if (p.type == "r")
+            {
+                List<Point> RookMoves = ValidRookMoves(b);
+                Points.AddRange(RookMoves);
+            }
+            
             // Knight
-            List<Point> KnightMoves = ValidKnightMoves(b);
-            Points.AddRange(KnightMoves);
+            if (p.type == "n")
+            {
+                List<Point> KnightMoves = ValidKnightMoves(b);
+                Points.AddRange(KnightMoves);
+            }
+            
             // Bishop
-            List<Point> BishopMoves = ValidBishopMoves(b);
-            Points.AddRange(BishopMoves);
+            if (p.type == "b")
+            {
+                List<Point> BishopMoves = ValidBishopMoves(b);
+                Points.AddRange(BishopMoves);
+            }
+            
             // Queen
-            List<Point> QueenMoves = ValidQueenMoves(b);
-            Points.AddRange(QueenMoves);
+            if (p.type == "q")
+            {
+                List<Point> QueenMoves = ValidQueenMoves(b);
+                Points.AddRange(QueenMoves);
+            }
+
             // King
-            List<Point> KingMoves = ValidKingMoves(b);
-            Points.AddRange(KingMoves);
+            if (p.type == "k")
+            {
+                List<Point> KingMoves = ValidKingMoves(b);
+                Points.AddRange(KingMoves);
+            }
+            
             return Points;
         }
 
