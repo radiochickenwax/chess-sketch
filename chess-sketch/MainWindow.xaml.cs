@@ -113,6 +113,17 @@ namespace chess_sketch
             vb.Child = pawnImage;
         }
 
+        private void RemoveAllPiecesFromUI()
+        {
+            var elements = MainGrid.Children
+             .Cast<UIElement>()
+             .Where(e => e.GetType().Name == "Viewbox");
+            while (elements.Count() > 0)
+            {
+                MainGrid.Children.Remove(elements.FirstOrDefault());
+            }
+        }
+
         private Viewbox GetViewBoxOnGrid(int row, int col)
         {
             Viewbox v = null;
@@ -185,13 +196,11 @@ namespace chess_sketch
                     SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );   
                     string PngName = ((Image)v.Child).Source.ToString();
                     PngName = 6 > PngName.Length ? PngName : PngName.Substring(PngName.Length - 6);
-
                     RemoveAllLitSquares();
 
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
-
                     LightUpBorderOnGrid(x, y);
 
                     // get piece on board
@@ -204,11 +213,8 @@ namespace chess_sketch
                     // convert them and light them up
                     foreach (Point pt in pts)
                         LightUpBorderOnGrid((int)pt.Y-1, (int)pt.X-1);
-                    
                 }
-                
                 // get image name from grid?
-                
             }
         }
 
@@ -236,7 +242,6 @@ namespace chess_sketch
 
         private void InitializeChessboard()
         {
-
             for (int i = 0; i < 8; i++)
             {
                 MainGrid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -272,5 +277,17 @@ namespace chess_sketch
                 }
         }
 
+        private void SidePanelTextBox0_SelectionChanged(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                // there should be a way better binding than this
+                BoardString = SidePanelTextBox0.Text;
+                Board = new Game.Board(BoardString);                
+                RemoveAllLitSquares();  // remove all the lit squares
+                RemoveAllPiecesFromUI(); // need to remove all of the images from the grid or they remain
+                ViewBoardString();
+            }
+        }
     }
 }
