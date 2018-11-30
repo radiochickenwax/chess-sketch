@@ -179,6 +179,7 @@ namespace chess_sketch
 
         private void SquareClicked(object sender, MouseEventArgs e)
         {
+            RemoveAllLitSquares();
             if (sender.GetType().Name == "Viewbox")
             {
                 Viewbox v = (Viewbox)sender;
@@ -196,7 +197,7 @@ namespace chess_sketch
                     SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );   
                     string PngName = ((Image)v.Child).Source.ToString();
                     PngName = 6 > PngName.Length ? PngName : PngName.Substring(PngName.Length - 6);
-                    RemoveAllLitSquares();
+            
 
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
@@ -256,6 +257,7 @@ namespace chess_sketch
                 for (int col = 0; col < 8; col++)
                 {
                     Border b = new Border();
+                    b.MouseDown += SquareClicked;
 
                     Label square = new Label();
                     square.Content = (col+1).ToString() + "," + (row+1).ToString();
