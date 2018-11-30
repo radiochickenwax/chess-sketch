@@ -224,16 +224,44 @@ namespace gsChessLib
 
 
         // get the piece that is n spaces forward from the supplied piece
-        public static Piece CheckForward(Board b, Piece p, int n)
+        public static Piece CheckForward(Board b, Piece p, int n, string direction)
         {
+            Piece ReturnPiece = null;
+            int x = p.x - '0';
             int y = p.y - '0';  // hack hack hack - this converts the char to an int
-            // TODO: Define "forward" by piece color
-            int yn = y + n;
-            if (p.color == "b")
+
+            int yn = -1;
+            int xn = -1;
+
+            if (direction == "n")
+            {
+                xn = x;
+                yn = y + n;
+            }
+                
+            if (direction == "e")
+            {
+                xn = x - n;
+                yn = y;
+            }
+                
+            if (direction == "s")
+            {
+                xn = x;
                 yn = y - n;
-            //int y = Convert.ToInt32(p.y);
+            }
+                
+            if (direction == "w")
+            {
+                xn = x + n;
+                yn = y;
+            }
             
-            Piece ReturnPiece = GetPieceOnSquare(b, p.x, yn.ToString()[0]); // TODO: verify this doesn't overflow the board
+            if (xn > 0)
+                if (xn < 9)
+                    if (yn > 0)
+                        if (yn < 9)
+                            ReturnPiece = GetPieceOnSquare(b, xn.ToString()[0], yn.ToString()[0]); // TODO: verify this doesn't overflow the board
             return ReturnPiece;
         }
 
@@ -260,7 +288,7 @@ namespace gsChessLib
                 xn = (x - n);
                 yn = (y - n);
             }
-            if (direction == "sw") // b: (r->sw), w: 
+            if (direction == "sw")
             {
                 xn = (x + n);
                 yn = (y - n);
@@ -301,9 +329,9 @@ namespace gsChessLib
 
             Point pt = new Point();
 
-            if ( CheckForward(b,p,1) == null)
+            Piece firstPiece = (p.color == "b") ? CheckForward(b, p, 1, "s") : CheckForward(b, p, 1, "n");
+            if ( firstPiece == null)
             {
-                
                 if (Double.TryParse(p.x.ToString(), out tmp))
                     pt.X = tmp;
                 if (Double.TryParse(p.y.ToString(), out tmp))
@@ -311,12 +339,13 @@ namespace gsChessLib
                     pt.Y = tmp + 1;
                     if (p.color == "b")
                         pt.Y = tmp - 1;
-                }
-                    
+                }       
                 ValidPoints.Add(pt);
 
                 if (p.moved == false)
-                    if (CheckForward(b, p, 2) == null)
+                {
+                    Piece secondPiece = (p.color == "b") ? CheckForward(b, p, 2, "s") : CheckForward(b, p, 2, "n");
+                    if (secondPiece == null)
                     {
                         if (Double.TryParse(p.x.ToString(), out tmp))
                             pt.X = tmp;
@@ -326,6 +355,8 @@ namespace gsChessLib
                             pt.Y = tmp - 2;
                         ValidPoints.Add(pt);
                     }
+
+                }
             }
 
             //if (p.color == 'w' && p.y + 1)
@@ -371,6 +402,10 @@ namespace gsChessLib
         public static List<Point> ValidRookMoves(Board b)
         {
             List<Point> ValidMoves = new List<Point>();
+            // check forward
+            // check backward
+            // check left
+            // check right
             return ValidMoves;
         }
 

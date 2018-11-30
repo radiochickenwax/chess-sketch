@@ -160,44 +160,44 @@ namespace gsChessLib
 
         }
 
-        [TestMethod]
-        public void TestCheckForward_negative()
-        {
-            Game.Board b = new Game.Board();
-            // b.BoardString = b.Initialize8x8Board();
-            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
-            b.BoardStringToPieces();
+        //[TestMethod]
+        //public void TestCheckForward_negative()
+        //{
+        //    Game.Board b = new Game.Board();
+        //    // b.BoardString = b.Initialize8x8Board();
+        //    b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+        //    b.BoardStringToPieces();
 
 
-            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
-            Assert.IsTrue(p != null);
-            Assert.IsTrue(p.type == "P");
+        //    Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
+        //    Assert.IsTrue(p != null);
+        //    Assert.IsTrue(p.type == "P");
 
-            Game.Piece p1 = Game.CheckForward(b, p, -2);
-            Assert.IsTrue(p1 == null);
-        }
+        //    Game.Piece p1 = Game.CheckForward(b, p, -2);
+        //    Assert.IsTrue(p1 == null);
+        //}
 
-        [TestMethod]
-        public void TestCheckForward_positive()
-        {
-            Game.Board b = new Game.Board();
-            // b.BoardString = b.Initialize8x8Board();
-            b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
-            b.BoardStringToPieces();
-            // ==============
-            // negative case
-            // ==============
-            b.BoardString = "RNBKQBNR\nQPPPPPPP\np.......\n........\n........\n........\npppppppp\nrnbkqbnr";
-            b.BoardStringToPieces();
-            Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
-            Assert.IsTrue(p != null);
-            Assert.IsTrue(p.type == "Q");
+        //[TestMethod]
+        //public void TestCheckForward_positive()
+        //{
+        //    Game.Board b = new Game.Board();
+        //    // b.BoardString = b.Initialize8x8Board();
+        //    b.BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
+        //    b.BoardStringToPieces();
+        //    // ==============
+        //    // negative case
+        //    // ==============
+        //    b.BoardString = "RNBKQBNR\nQPPPPPPP\np.......\n........\n........\n........\npppppppp\nrnbkqbnr";
+        //    b.BoardStringToPieces();
+        //    Game.Piece p = Game.GetPieceOnSquare(b, '1', '2');
+        //    Assert.IsTrue(p != null);
+        //    Assert.IsTrue(p.type == "Q");
 
-            Game.Piece p1 = Game.GetPieceOnSquare(b, '1', '3');
-            Assert.IsTrue(p1.type == "p");
-            p1 = Game.CheckForward(b, p, 1);
-            Assert.IsTrue(p1 != null);
-        }
+        //    Game.Piece p1 = Game.GetPieceOnSquare(b, '1', '3');
+        //    Assert.IsTrue(p1.type == "p");
+        //    p1 = Game.CheckForward(b, p, 1);
+        //    Assert.IsTrue(p1 != null);
+        //}
 
         [TestMethod]
         public void TestValidPawnMovesForward_init()
