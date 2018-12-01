@@ -223,6 +223,7 @@ namespace chess_sketch
         private void LightUpBorderOnGrid(int row, int col)
         {
             Border light = new Border { Background = Brushes.Red, Opacity = 0.6, Name = "lb_" + row.ToString() + "_" + col.ToString() };
+            light.MouseDown += LitSquareClicked;
             Grid.SetRow(light, row);
             Grid.SetColumn(light, col);
             MainGrid.Children.Add(light);
@@ -241,7 +242,28 @@ namespace chess_sketch
 
         }
 
+        private void LitSquareClicked(object sender, MouseEventArgs e)
+        {
+            RemoveAllLitSquares();
+            if (sender.GetType().Name == "Border")
+            {
+                Border v = (Border)sender;
+                string name = v.Name;
+                SidePanelTextBox.Text += "\n" + name + " clicked.";
+                SidePanelTextBox.ScrollToEnd();
+                // get coords from name
+                string[] vals = name.Split('_');
+                if (vals.Count() == 3)
+                {
+                    string y_str = vals[1];
+                    string x_str = vals[2];
+                    int x = x_str[0] - '0';
+                    int y = y_str[0] - '0';
+                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y);
 
+                }
+            }
+        }
         private void InitializeChessboard()
         {
             for (int i = 0; i < 8; i++)
