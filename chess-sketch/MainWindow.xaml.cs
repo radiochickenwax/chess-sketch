@@ -75,6 +75,7 @@ namespace chess_sketch
 
         private void ViewBoardString()
         {
+            RemoveAllPiecesFromUI(); // need to remove all of the images from the grid or they remain
             Board.BoardStringToPieces();
             foreach (Game.Piece p in Board.Pieces)
             {
@@ -269,24 +270,9 @@ namespace chess_sketch
                     SidePanelTextBox.Text += String.Format("Xn: {0} Yn: {1} Xo: {2} Yo: {3}", x, y, xo, yo);
 
                     // actually change the piece on the board now
-                    string[] rows = BoardString.Split('\n'); // get the row
-
-                    StringBuilder StartRowBuilder = new StringBuilder(rows[xo]);
-                    StartRowBuilder.Remove(yo, 1);  // remove the original char
-                    StartRowBuilder.Insert(yo, ".");  // insert an empty piece
-                    rows[xo] = StartRowBuilder.ToString();
-
-                    StringBuilder EndRowBuilder = new StringBuilder(rows[x]);
-                    EndRowBuilder.Remove(y, 1);  // remove the original char
-                    EndRowBuilder.Insert(y, SelectedPieceType);  // remove the original char
-                    rows[x] = EndRowBuilder.ToString();
-
-                    BoardString = "";
-                    foreach (string row in rows)
-                        BoardString += row + "\n";
-
-                    Board = new Game.Board(BoardString);
-                    RemoveAllPiecesFromUI(); // need to remove all of the images from the grid or they remain
+                    Board.Move(new Point { X = xo, Y = yo}, new Point { X = x, Y = y});
+                    BoardString = Board.BoardString; /// TODO: DataBinding isn't working the way I'd expect
+                    SidePanelTextBox0.Text = BoardString; // changing the BoardString from the GameLib doesn't update the UI
                     ViewBoardString();
                 }
             }
@@ -337,7 +323,6 @@ namespace chess_sketch
                 BoardString = SidePanelTextBox0.Text;
                 Board = new Game.Board(BoardString);                
                 RemoveAllLitSquares();  // remove all the lit squares
-                RemoveAllPiecesFromUI(); // need to remove all of the images from the grid or they remain
                 ViewBoardString();
             }
         }

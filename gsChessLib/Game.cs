@@ -28,6 +28,16 @@ namespace gsChessLib
             public String StartPointAlgebraic { get; set; }
             public String EndPointAlgebraic { get; set; }
 
+            Move(String StartPointAlgebraicIn, String EndPointAlgebraic)
+            {
+
+            }
+
+
+            Move(Point StartPointIn, Point EndPointIn)
+            {
+
+            }
         }
 
         public class Board
@@ -36,6 +46,7 @@ namespace gsChessLib
             public List<Piece> Pieces { get; set; }
             public string BoardString { get; set; } // starting pos could be: 'RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr'
             public string MoveList_HorizonalNotation { get; set; } // Horizontally: " 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 "
+            public string MoveList_PointNotation { get; set; }
 
             public Board()
             {
@@ -123,12 +134,62 @@ namespace gsChessLib
                 Pieces = newPieces;
             }
 
+            public void Move(Point StartPoint, Point EndPoint)
+            {
+                int xo = StartPoint.X.ToString()[0] -'0';
+                int yo = StartPoint.Y.ToString()[0] - '0';
+
+                int x = EndPoint.X.ToString()[0] - '0';
+                int y = EndPoint.Y.ToString()[0] - '0';
+
+                // verify that a Piece is on StartPoint - remember that x,y are currently swapped and need to be fixed somewhere
+                Piece PieceToMove = GetPieceOnSquare((StartPoint.Y + 1).ToString()[0], (StartPoint.X+1).ToString()[0]);
+                if (PieceToMove == null)
+                    return;
+
+                
+                // actually change the piece on the board now
+                string[] rows = this.BoardString.Split('\n'); // get the row
+
+                StringBuilder StartRowBuilder = new StringBuilder(rows[xo]);
+                StartRowBuilder.Remove(yo, 1);  // remove the original char
+                StartRowBuilder.Insert(yo, ".");  // insert an empty piece
+                rows[xo] = StartRowBuilder.ToString();
+
+                StringBuilder EndRowBuilder = new StringBuilder(rows[x]);
+                EndRowBuilder.Remove(y, 1);  // remove the original char
+                EndRowBuilder.Insert(y, PieceToMove.type);  // remove the original char
+                rows[x] = EndRowBuilder.ToString();
+
+                BoardString = "";
+                foreach (string row in rows)
+                    BoardString += row + "\n";
+
+                BoardStringToPieces();
+            }
+
+
+            public Piece GetPieceOnSquare(char x, char y)
+            {
+                // searching for piece on b,x,y
+                Piece thisPiece = null;
+                foreach (Piece p in Pieces)
+                {
+                    // # print(piece.type+' tpcolor:'+str(piece.color)+' tpx:'+str(piece.x)+' tpy:'+str(piece.y))
+                    if (p.x == x && p.y == y)
+                        thisPiece = p;
+                }
+                return thisPiece;
+
+            }
+
             // get a list of possible moves per piece given the board
-            public static List<string> GetPossibleMoves(Board b)
+            public List<string> GetPossibleMoves()
             {
                 List<string> ValidMoves = new List<string>();
                 return ValidMoves;
             }
+
 
             public static List<Piece> WhitePieces()
             {
