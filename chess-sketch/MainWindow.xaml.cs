@@ -40,6 +40,7 @@ namespace chess_sketch
         public string BoardString { get; set; }
         public List<coordinate> LitSquares { get; set; }
         public coordinate SelectedCoordinate { get; set; }
+        public string SelectedPieceType { get; set; }
 
         // TODO:  make this independent of capitalization
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
@@ -205,12 +206,13 @@ namespace chess_sketch
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
                     // LightUpBorderOnGrid(x, y);  // light the current piece
-                    SelectedCoordinate = new coordinate(x,y);
 
                     // get piece on board
                     char xchr = (y+1).ToString()[0];
                     char ychr = (x+1).ToString()[0];
                     Game.Piece p = Game.GetPieceOnSquare(Board, xchr, ychr);
+                    SelectedCoordinate = new coordinate(x, y);
+                    SelectedPieceType = p.type;
 
                     // get possible moves
                     List<Point> pts = Game.ValidMoves(Board, p);
@@ -262,9 +264,30 @@ namespace chess_sketch
                     string y_str = vals[2];
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
-                    SidePanelTextBox.Text += String.Format("Xn: {0} Yn: {1} Xo: {2} Yo: {3}", x, y, SelectedCoordinate.x, SelectedCoordinate.y);
+                    int xo = SelectedCoordinate.x;
+                    int yo = SelectedCoordinate.y;
+                    SidePanelTextBox.Text += String.Format("Xn: {0} Yn: {1} Xo: {2} Yo: {3}", x, y, xo, yo);
 
                     // actually change the piece on the board now
+                    string[] rows = BoardString.Split('\n'); // get the row
+
+                    StringBuilder StartRowBuilder = new StringBuilder(rows[xo]);
+                    StartRowBuilder.Remove(yo, 1);  // remove the original char
+                    StartRowBuilder.Insert(yo, ".");  // insert an empty piece
+                    rows[xo] = StartRowBuilder.ToString();
+
+                    StringBuilder EndRowBuilder = new StringBuilder(rows[x]);
+                    EndRowBuilder.Remove(y, 1);  // remove the original char
+                    EndRowBuilder.Insert(y, SelectedPieceType);  // remove the original char
+                    rows[x] = EndRowBuilder.ToString();
+
+                    BoardString = "";
+                    foreach (string row in rows)
+                        BoardString += row + "\n";
+
+                    Board = new Game.Board(BoardString);
+                    RemoveAllPiecesFromUI(); // need to remove all of the images from the grid or they remain
+                    ViewBoardString();
                 }
             }
         }
