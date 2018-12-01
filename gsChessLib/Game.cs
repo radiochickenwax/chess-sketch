@@ -456,14 +456,31 @@ namespace gsChessLib
                             ReturnPoints.Add(EmptySquare);
                         }
                     }
+                    if (direction == "sw")
+                    {
+                        if (y - i < 1 || x + i > 8)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x + i), Y = (double)(y - i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+                    if (direction == "se")
+                    {
+                        if (y - i < 1 || x - i < 1)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x - i), Y = (double)(y - i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
                     i++;
                 }
                 else if (TestPiece.color != p.color)
                 {
-                    //if (direction == "ne")
-                    //{
-                        ReturnPoints.Add(new Point { X = (double)(TestPiece.x - '0'), Y = (double)(TestPiece.y - '0') });
-                    //}
+                    ReturnPoints.Add(new Point { X = (double)(TestPiece.x - '0'), Y = (double)(TestPiece.y - '0') });
                     EndOfBoard = true;
                     break;
                 }
@@ -565,8 +582,12 @@ namespace gsChessLib
             List<Point> NorthWestPoints = GetEmptyDiagonalPieces(b, p, "nw");
             ValidMoves.AddRange(NorthWestPoints);
 
-            //string direction = "ne";
-            // CheckDiagonal(b, p, n, direction);
+            List<Point> SouthWestPoints = GetEmptyDiagonalPieces(b, p, "sw");
+            ValidMoves.AddRange(SouthWestPoints);
+
+            List<Point> SouthEastPoints = GetEmptyDiagonalPieces(b, p, "se");
+            ValidMoves.AddRange(SouthEastPoints);
+
             return ValidMoves;
         }
 
