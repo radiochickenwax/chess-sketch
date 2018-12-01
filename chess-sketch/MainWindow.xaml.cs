@@ -195,7 +195,7 @@ namespace chess_sketch
                     string y_str = vals[2];
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
-                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y );   
+                    SidePanelTextBox.Text += String.Format("X: {0} Y: {1}", x, y );   
                     string PngName = ((Image)v.Child).Source.ToString();
                     PngName = 6 > PngName.Length ? PngName : PngName.Substring(PngName.Length - 6);
             
@@ -255,11 +255,11 @@ namespace chess_sketch
                 string[] vals = name.Split('_');
                 if (vals.Count() == 3)
                 {
-                    string y_str = vals[1];
-                    string x_str = vals[2];
+                    string x_str = vals[1];
+                    string y_str = vals[2];
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
-                    SidePanelTextBox.Text += String.Format("X: {0} Y: {0}", x, y);
+                    SidePanelTextBox.Text += String.Format("X: {0} Y: {1}", x, y);
 
                 }
             }
