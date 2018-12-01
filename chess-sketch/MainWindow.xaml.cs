@@ -39,6 +39,7 @@ namespace chess_sketch
         public Game.Board Board { get; set; }
         public string BoardString { get; set; }
         public List<coordinate> LitSquares { get; set; }
+        public coordinate SelectedCoordinate { get; set; }
 
         // TODO:  make this independent of capitalization
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
@@ -203,7 +204,8 @@ namespace chess_sketch
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
-                    LightUpBorderOnGrid(x, y);
+                    // LightUpBorderOnGrid(x, y);  // light the current piece
+                    SelectedCoordinate = new coordinate(x,y);
 
                     // get piece on board
                     char xchr = (y+1).ToString()[0];
@@ -222,6 +224,7 @@ namespace chess_sketch
 
         private void LightUpBorderOnGrid(int row, int col)
         {
+            // store the grid coordinate of the border in its name
             Border light = new Border { Background = Brushes.Red, Opacity = 0.6, Name = "lb_" + row.ToString() + "_" + col.ToString() };
             light.MouseDown += LitSquareClicked;
             Grid.SetRow(light, row);
@@ -259,8 +262,9 @@ namespace chess_sketch
                     string y_str = vals[2];
                     int x = x_str[0] - '0';
                     int y = y_str[0] - '0';
-                    SidePanelTextBox.Text += String.Format("X: {0} Y: {1}", x, y);
+                    SidePanelTextBox.Text += String.Format("Xn: {0} Yn: {1} Xo: {2} Yo: {3}", x, y, SelectedCoordinate.x, SelectedCoordinate.y);
 
+                    // actually change the piece on the board now
                 }
             }
         }
