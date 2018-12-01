@@ -204,7 +204,7 @@ namespace gsChessLib
             // Bishop
             if (p.type.ToLower() == "b")
             {
-                List<Point> BishopMoves = ValidBishopMoves(b);
+                List<Point> BishopMoves = ValidBishopMoves(b,p);
                 Points.AddRange(BishopMoves);
             }
             
@@ -423,6 +423,46 @@ namespace gsChessLib
             return ValidPoints;
         }
 
+        public static List<Point> GetEmptyDiagonalPieces(Board b, Piece p, string direction)
+        {
+            List<Point> ReturnPoints = new List<Point>();
+            Piece TestPiece = null;
+            int i = 1;
+            bool EndOfBoard = false;
+            int x = p.x - '0';   // convert from char to int
+            int y = p.y - '0';
+            while (TestPiece == null && !EndOfBoard)
+            {
+                TestPiece = CheckDiagonal(b, p, i, direction);
+                if (TestPiece == null)
+                {
+                    if (direction == "ne")
+                    {
+                        if (y + i > 8 || x - i < 1)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x - i), Y = (double)(y + i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+                    if (direction == "nw")
+                    {
+                        if (y + i > 8 || x + i > 8)
+                            EndOfBoard = true;
+                        else
+                        {
+                            Point EmptySquare = new Point { X = (double)(x + i), Y = (double)(y + i) };
+                            ReturnPoints.Add(EmptySquare);
+                        }
+                    }
+
+                }
+                i++;
+            }
+            return ReturnPoints;
+        }
+
         public static List<Point> GetEmptyForwardPieces(Board b, Piece p, string direction)
         {
             List<Point> ReturnPoints = new List<Point>();
@@ -506,13 +546,22 @@ namespace gsChessLib
             return ValidMoves;
         }
 
-        public static List<Point> ValidKnightMoves(Board b)
+        public static List<Point> ValidBishopMoves(Board b, Piece p)
         {
             List<Point> ValidMoves = new List<Point>();
+
+            List<Point> NorthEastPoints = GetEmptyDiagonalPieces(b,p,"ne");
+            ValidMoves.AddRange(NorthEastPoints);
+
+            List<Point> NorthWestPoints = GetEmptyDiagonalPieces(b, p, "nw");
+            ValidMoves.AddRange(NorthWestPoints);
+
+            //string direction = "ne";
+            // CheckDiagonal(b, p, n, direction);
             return ValidMoves;
         }
 
-        public static List<Point> ValidBishopMoves(Board b)
+        public static List<Point> ValidKnightMoves(Board b)
         {
             List<Point> ValidMoves = new List<Point>();
             return ValidMoves;
