@@ -211,7 +211,7 @@ namespace gsChessLib
             // Queen
             if (p.type.ToLower() == "q")
             {
-                List<Point> QueenMoves = ValidQueenMoves(b);
+                List<Point> QueenMoves = ValidQueenMoves(b,p);
                 Points.AddRange(QueenMoves);
             }
 
@@ -604,9 +604,11 @@ namespace gsChessLib
             return ValidMoves;
         }
 
-        public static List<Point> ValidQueenMoves(Board b)
+        public static List<Point> ValidQueenMoves(Board b, Piece p)
         {
             List<Point> ValidMoves = new List<Point>();
+            List<Point> BishopStylePoints = ValidBishopMoves(b, p);
+            ValidMoves.AddRange(BishopStylePoints);
             return ValidMoves;
         }
 
