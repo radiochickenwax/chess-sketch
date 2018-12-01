@@ -456,9 +456,18 @@ namespace gsChessLib
                             ReturnPoints.Add(EmptySquare);
                         }
                     }
-
+                    i++;
                 }
-                i++;
+                else if (TestPiece.color != p.color)
+                {
+                    //if (direction == "ne")
+                    //{
+                        ReturnPoints.Add(new Point { X = (double)(TestPiece.x - '0'), Y = (double)(TestPiece.y - '0') });
+                    //}
+                    EndOfBoard = true;
+                    break;
+                }
+
             }
             return ReturnPoints;
         }
