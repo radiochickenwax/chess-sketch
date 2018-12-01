@@ -550,6 +550,13 @@ namespace gsChessLib
                         EndOfBoard = true;
                     i++;
                 }
+                else if (TestPiece.color != p.color)
+                {
+                    ReturnPoints.Add(new Point { X = (double)(TestPiece.x - '0'), Y = (double)(TestPiece.y - '0') });
+                    EndOfBoard = true;
+                    break;
+                }
+
             }
             return ReturnPoints;
         }
