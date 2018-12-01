@@ -65,7 +65,7 @@ namespace chess_sketch
 
             FillInitializedChessboard(); // this is UI only 
 
-            BoardString = "RNBKQBNR\nPPPPPPPP\n.p......\np..br...\n.R......\n.....P..\n.ppppppp\nrnbkqbnr";
+            BoardString = "RNBKQBNR\nPPPPPPPP\n.p......\np..bK...\n.R......\n.....P..\n.ppppppp\nrnbkqbnr";
             Board = new Game.Board(BoardString);
             ViewBoardString();
 
