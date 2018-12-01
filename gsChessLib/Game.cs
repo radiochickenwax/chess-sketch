@@ -607,8 +607,13 @@ namespace gsChessLib
         public static List<Point> ValidQueenMoves(Board b, Piece p)
         {
             List<Point> ValidMoves = new List<Point>();
+
             List<Point> BishopStylePoints = ValidBishopMoves(b, p);
             ValidMoves.AddRange(BishopStylePoints);
+
+            List<Point> RookStylePoints = ValidRookMoves(b, p);
+            ValidMoves.AddRange(RookStylePoints);
+
             return ValidMoves;
         }
 
