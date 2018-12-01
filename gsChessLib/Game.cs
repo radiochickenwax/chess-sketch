@@ -620,30 +620,50 @@ namespace gsChessLib
         public static List<Point> ValidKingMoves(Board b, Piece p)
         {
             List<Point> ValidMoves = new List<Point>();
-            Piece TestPiece = null;            
+            Piece TestPiece = null;
+
             TestPiece = CheckForward(b, p, 1, "n");
             if (TestPiece == null || TestPiece.color != p.color)
                 if (p.y - '0' + 1 < 9)
                     ValidMoves.Add(new Point { X = p.x - '0', Y = (p.y - '0' + 1)});
-            // s
-            TestPiece = CheckForward(b, p, 1, "s");
+
+            TestPiece = CheckDiagonal(b, p, 1, "ne");
             if (TestPiece == null || TestPiece.color != p.color)
-                if (p.y - '0' - 1 > 0)
-                    ValidMoves.Add(new Point { X = p.x - '0', Y = (p.y - '0' - 1) });
-            // e
+                if (p.x - '0' - 1 > 0 && p.y - '0' + 1 < 9 )
+                    ValidMoves.Add(new Point { X = p.x - '0' - 1, Y = (p.y - '0' + 1) });
+            
             TestPiece = CheckForward(b, p, 1, "e");
             if (TestPiece == null || TestPiece.color != p.color)
                 if (p.x - '0' - 1 > 0)
                     ValidMoves.Add(new Point { X = p.x - '0' - 1, Y = (p.y - '0') });
-            // w
+
+            TestPiece = CheckDiagonal(b, p, 1, "se");
+            if (TestPiece == null || TestPiece.color != p.color)
+                if (p.x - '0' - 1 > 0 && p.y - '0' - 1 > 0)
+                    ValidMoves.Add(new Point { X = p.x - '0' - 1, Y = (p.y - '0' - 1) });
+
+            TestPiece = CheckForward(b, p, 1, "s");
+            if (TestPiece == null || TestPiece.color != p.color)
+                if (p.y - '0' - 1 > 0)
+                    ValidMoves.Add(new Point { X = p.x - '0', Y = (p.y - '0' - 1) });
+
+            TestPiece = CheckDiagonal(b, p, 1, "sw");
+            if (TestPiece == null || TestPiece.color != p.color)
+                if (p.x - '0' + 1 < 9 && p.y - '0' - 1 > 0)
+                    ValidMoves.Add(new Point { X = p.x - '0' + 1, Y = (p.y - '0' - 1) });
+
             TestPiece = CheckForward(b, p, 1, "w");
             if (TestPiece == null || TestPiece.color != p.color)
                 if (p.x - '0' + 1 < 9)
                     ValidMoves.Add(new Point { X = p.x - '0' + 1, Y = (p.y - '0') });
+
+            TestPiece = CheckDiagonal(b, p, 1, "nw");
+            if (TestPiece == null || TestPiece.color != p.color)
+                if (p.x - '0' + 1 < 9 && p.y - '0' + 1 < 9)
+                    ValidMoves.Add(new Point { X = p.x - '0' + 1, Y = (p.y - '0' + 1) });
+
             return ValidMoves;
         }
-
-
     }
 
 
