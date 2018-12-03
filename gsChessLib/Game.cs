@@ -161,11 +161,12 @@ namespace gsChessLib
                 EndRowBuilder.Insert(y, PieceToMove.type);  // remove the original char
                 rows[x] = EndRowBuilder.ToString();
 
-                BoardString = "";
-                foreach (string row in rows)
+                BoardString = "";  // reset the string and rebuild it row by row.  Note the coordinate system is changed here
+                foreach (string row in rows) 
                     BoardString += row + "\n";
 
-                BoardStringToPieces();
+                MoveList_PointNotation += "\n(" + StartPoint.X.ToString()[0] + "," + StartPoint.Y.ToString()[0] + ") -> (" + EndPoint.X.ToString() + "," + EndPoint.Y.ToString() + ")";// store the move in the board
+                BoardStringToPieces(); // convert the string to pieces
             }
 
 

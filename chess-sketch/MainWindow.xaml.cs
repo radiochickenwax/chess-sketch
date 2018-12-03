@@ -271,6 +271,7 @@ namespace chess_sketch
 
                     // actually change the piece on the board now
                     Board.Move(new Point { X = xo, Y = yo}, new Point { X = x, Y = y});
+                    SidePanelTextBox1.Text = Board.MoveList_PointNotation;
                     BoardString = Board.BoardString; /// TODO: DataBinding isn't working the way I'd expect
                     SidePanelTextBox0.Text = BoardString; // changing the BoardString from the GameLib doesn't update the UI
                     ViewBoardString();
