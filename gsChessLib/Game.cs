@@ -147,6 +147,8 @@ namespace gsChessLib
                 if (PieceToMove == null)
                     return;
 
+                if (PieceToMove.type.ToLower() == "p")
+                    PieceToMove.moved = true; // TODO: this won't work if using BoardStringToPieces()
                 
                 // actually change the piece on the board now
                 string[] rows = this.BoardString.Split('\n'); // get the row
@@ -165,7 +167,7 @@ namespace gsChessLib
                 foreach (string row in rows) 
                     BoardString += row + "\n";
 
-                MoveList_PointNotation += "\n(" + StartPoint.X.ToString()[0] + "," + StartPoint.Y.ToString()[0] + ") -> (" + EndPoint.X.ToString() + "," + EndPoint.Y.ToString() + ")";// store the move in the board
+                MoveList_PointNotation += "\n" + PieceToMove.color + ": (" + StartPoint.X.ToString()[0] + "," + StartPoint.Y.ToString()[0] + ") -> (" + EndPoint.X.ToString() + "," + EndPoint.Y.ToString() + ")";// store the move in the board
                 BoardStringToPieces(); // convert the string to pieces
             }
 

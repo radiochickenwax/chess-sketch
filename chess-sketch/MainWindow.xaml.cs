@@ -40,7 +40,20 @@ namespace chess_sketch
         public string BoardString { get; set; }
         public List<coordinate> LitSquares { get; set; }
         public coordinate SelectedCoordinate { get; set; }
-        public string SelectedPieceType { get; set; }
+        public Game.Piece SelectedPiece { get; set; }
+        public string Turn;
+        public string GetSetTurn
+        {
+            get {
+                return Turn;
+            }
+            set {
+                if (Turn == "w")
+                    Turn = "b";
+                else
+                    Turn = "w";
+            }
+        }  // putting this in the UI, but maybe it belongs in a Game lib?
 
         // TODO:  make this independent of capitalization
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {
@@ -68,6 +81,7 @@ namespace chess_sketch
             FillInitializedChessboard(); // this is UI only 
 
             BoardString = "RNBQKBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbqkbnr";
+            Turn = "w";  // start with a white player
             Board = new Game.Board(BoardString);
             ViewBoardString();
 
@@ -213,7 +227,7 @@ namespace chess_sketch
                     char ychr = (x+1).ToString()[0];
                     Game.Piece p = Game.GetPieceOnSquare(Board, xchr, ychr);
                     SelectedCoordinate = new coordinate(x, y);
-                    SelectedPieceType = p.type;
+                    SelectedPiece = p;
 
                     // get possible moves
                     List<Point> pts = Game.ValidMoves(Board, p);
@@ -245,7 +259,6 @@ namespace chess_sketch
 
             // remove from list
             LitSquares.RemoveAll(l => l.x == row && l.y == col);
-
         }
 
         private void LitSquareClicked(object sender, MouseEventArgs e)
@@ -270,11 +283,21 @@ namespace chess_sketch
                     SidePanelTextBox.Text += String.Format("Xn: {0} Yn: {1} Xo: {2} Yo: {3}", x, y, xo, yo);
 
                     // actually change the piece on the board now
-                    Board.Move(new Point { X = xo, Y = yo}, new Point { X = x, Y = y});
-                    SidePanelTextBox1.Text = Board.MoveList_PointNotation;
-                    BoardString = Board.BoardString; /// TODO: DataBinding isn't working the way I'd expect
-                    SidePanelTextBox0.Text = BoardString; // changing the BoardString from the GameLib doesn't update the UI
-                    ViewBoardString();
+                    /* TODO:    there's a question of where the turns should be stored - in the UI or the Backend. 
+                     *          I can see reasons for both sides.   Ultimately, I want to keep the Game lib separate 
+                     *          from an actual game -- at least for now because I'd like to be able to extend beyond 8x8 boards.
+                     *          There are some hardcodes there that are keeping it 8x8, but I'd like to be able to scale soon
+                     *          after getting an actual game to work.
+                    */
+                    //if (Board.ToString)
+                    if (SelectedPiece.color == Turn)
+                    {
+                        Board.Move(new Point { X = xo, Y = yo }, new Point { X = x, Y = y });
+                        SidePanelTextBox1.Text = Board.MoveList_PointNotation;
+                        BoardString = Board.BoardString; /// TODO: DataBinding isn't working the way I'd expect
+                        SidePanelTextBox0.Text = BoardString; // changing the BoardString from the GameLib doesn't update the UI
+                        ViewBoardString();
+                    }
                 }
             }
         }
