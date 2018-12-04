@@ -22,23 +22,11 @@ namespace chess_sketch
     /// </summary>
     /// 
 
-    public class coordinate
-    {
-        public int x { get; set; }
-        public int y { get; set; }
-        public coordinate(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-
     public partial class MainWindow : Window
     {
         public Game.Board Board { get; set; }
         public string BoardString { get; set; }
-        public List<coordinate> LitSquares { get; set; }
+        public List<coordinate> LitSquares { get; set; }   // hoisted
         public coordinate SelectedCoordinate { get; set; }
         public Game.Piece SelectedPiece { get; set; }
         public string Turn;
@@ -54,6 +42,17 @@ namespace chess_sketch
                     Turn = "w";
             }
         }  // putting this in the UI, but maybe it belongs in a Game lib?
+
+        public class coordinate
+        {
+            public int x { get; set; }
+            public int y { get; set; }
+            public coordinate(int x, int y)
+            {
+                this.x = x;
+                this.y = y;
+            }
+        }
 
         // TODO:  make this independent of capitalization
         Dictionary<string, string> PiecesToPngDict = new Dictionary<string, string> {

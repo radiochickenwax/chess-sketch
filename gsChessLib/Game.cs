@@ -47,6 +47,7 @@ namespace gsChessLib
             public string BoardString { get; set; } // starting pos could be: 'RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr'
             public string MoveList_HorizonalNotation { get; set; } // Horizontally: " 1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 "
             public string MoveList_PointNotation { get; set; }
+            public static List<Point> UnmovedPoints { get; set; }  // unmoved pawns can move 2 spaces and capture en passant
 
             public Board()
             {
@@ -61,7 +62,7 @@ namespace gsChessLib
             public string Initialize8x8Board()
             {
                 BoardString = "RNBKQBNR\nPPPPPPPP\n........\n........\n........\n........\npppppppp\nrnbkqbnr";
-                BoardStringToPieces();
+                //SetAllPawnsUnmoved();
                 return BoardString;
             }
 
@@ -69,6 +70,8 @@ namespace gsChessLib
             {
                 BoardString = s;
                 BoardStringToPieces();
+                UnmovedPoints = new List<Point>();
+                SetAllPawnsUnmoved();
                 //return BoardString;
             }
 
@@ -114,7 +117,11 @@ namespace gsChessLib
                     {
                         if (row[j] != '.')
                         {
-                            Piece p = new Piece();
+                            Piece p = new Piece();  // TODO:  this prevents pawns from registering that they have moved
+                            p.moved = true;
+                            if (UnmovedPoints != null)
+                                if (UnmovedPoints.Any(pt => pt.X == j+1 && pt.Y == i+1))
+                                    p.moved = false;  // TODO:  this has to be tracked downstream
                             // set position
                             p.x = (j + 1).ToString()[0];
                             p.y = (i + 1).ToString()[0];
@@ -147,9 +154,12 @@ namespace gsChessLib
                 if (PieceToMove == null)
                     return;
 
-                if (PieceToMove.type.ToLower() == "p")
-                    PieceToMove.moved = true; // TODO: this won't work if using BoardStringToPieces()
-                
+                //if (PieceToMove.type.ToLower() == "p") { 
+
+                PieceToMove.moved = true; // TODO: this won't work if using BoardStringToPieces()
+                RemovePieceFromUnmoved(PieceToMove);
+                //}
+
                 // actually change the piece on the board now
                 string[] rows = this.BoardString.Split('\n'); // get the row
 
@@ -171,6 +181,32 @@ namespace gsChessLib
                 BoardStringToPieces(); // convert the string to pieces
             }
 
+            public void SetAllPawnsUnmoved()
+            {
+                foreach (Piece p in Pieces)
+                {
+                    p.moved = false;
+                    Point pt = new Point { X = p.x - '0', Y = p.y - '0'};
+                    UnmovedPoints.Add(pt);
+                }
+
+            }
+
+            public void RemovePieceFromUnmoved(Piece InputPiece)
+            {
+                // searching for piece on b,x,y
+                for (int i = 0; i < UnmovedPoints.Count; i++)
+                {
+                    Point pt = UnmovedPoints[i];
+                    // # print(piece.type+' tpcolor:'+str(piece.color)+' tpx:'+str(piece.x)+' tpy:'+str(piece.y))
+                    if (pt.X == InputPiece.x - '0' && pt.Y == InputPiece.y - '0')
+                    {
+                        InputPiece.moved = true;
+                        UnmovedPoints.RemoveAt(i);
+                    }
+                }
+                
+            }
 
             public Piece GetPieceOnSquare(char x, char y)
             {
