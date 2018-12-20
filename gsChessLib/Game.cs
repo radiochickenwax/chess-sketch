@@ -261,6 +261,7 @@ namespace gsChessLib
         public static Point AlgebraicStringToPoint(string s)
         {
             // TODO: try/catch cases:  p.X/p.Y > 8?
+            
             Point p = new Point();
             char c = s[0];
             p.X = "abcdefgh".IndexOf(c);
@@ -275,7 +276,8 @@ namespace gsChessLib
         // https://archive.codeplex.com/?p=quickgraph
         // https://github.com/nikaburu/wpf-chess
         // https://programming-pages.com/2012/01/15/wpfs-grid-layout-in-xaml-and-c/
-        // Single depth list of moves for now - see the links above
+        // https://medium.freecodecamp.org/simple-chess-ai-step-by-step-1d55a9266977
+        // DONE: Single depth list of moves for now - see the links above
         public static List<Point> ValidMoves(Board b, Piece p)
         {
             List<Point> Points = new List<Point>();

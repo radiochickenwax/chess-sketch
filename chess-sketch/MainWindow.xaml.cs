@@ -219,7 +219,7 @@ namespace chess_sketch
                     // get piece from dict
                     string PieceName = GetPieceFromPngName(PngName);
                     SidePanelTextBox.Text += String.Format(" {0} {1}", PngName, PieceName);
-                    // LightUpBorderOnGrid(x, y);  // light the current piece
+                    LightUpBorderOnGrid(x, y);  // light the current piece
 
                     // get piece on board
                     char xchr = (y+1).ToString()[0];
